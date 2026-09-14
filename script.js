@@ -1,118 +1,50 @@
-/* ================================= */
-/* MY OCEAN - MAIN JAVASCRIPT */
-/* ================================= */
+document.addEventListener("DOMContentLoaded", () => {
 
 
-/* ================================= */
-/* PAGE LOADER */
-/* ================================= */
-
-window.addEventListener("load", () => {
+    /* ========================================= */
+    /* LOADER */
+    /* ========================================= */
 
     const loader =
-        document.getElementById("loader");
-
-    if (!loader) return;
-
-    setTimeout(() => {
-
-        loader.classList.add("loaded");
-
-    }, 900);
-
-});
+        document.querySelector(".loader");
 
 
-/* ================================= */
-/* DAY / NIGHT MODE */
-/* ================================= */
+    window.addEventListener("load", () => {
 
-const themeButton =
-    document.getElementById("theme-toggle");
+        setTimeout(() => {
 
+            if (loader) {
 
-const savedTheme =
-    localStorage.getItem("myOceanTheme");
+                loader.classList.add("loaded");
 
+            }
 
-if (savedTheme === "day") {
+        }, 1200);
 
-    document.body.classList.add("day");
-
-}
+    });
 
 
-function updateThemeButton() {
+    /* ========================================= */
+    /* CUSTOM CURSOR */
+    /* ========================================= */
 
-    if (!themeButton) return;
+    const cursor =
+        document.querySelector(".custom-cursor");
 
-    if (
-        document.body.classList.contains("day")
-    ) {
-
-        themeButton.textContent = "🌙";
-
-        themeButton.title =
-            "Switch to Night Mode";
-
-    } else {
-
-        themeButton.textContent = "☀️";
-
-        themeButton.title =
-            "Switch to Day Mode";
-
-    }
-
-}
+    const cursorRing =
+        document.querySelector(".cursor-ring");
 
 
-updateThemeButton();
+    let mouseX = window.innerWidth / 2;
+
+    let mouseY = window.innerHeight / 2;
+
+    let cursorX = mouseX;
+
+    let cursorY = mouseY;
 
 
-if (themeButton) {
-
-    themeButton.addEventListener(
-        "click",
-        () => {
-
-            document.body.classList.toggle("day");
-
-            const isDay =
-                document.body.classList.contains("day");
-
-            localStorage.setItem(
-                "myOceanTheme",
-                isDay ? "day" : "night"
-            );
-
-            updateThemeButton();
-
-            createBubbleBurst(
-                window.innerWidth / 2,
-                window.innerHeight / 2
-            );
-
-        }
-    );
-
-}
-
-
-/* ================================= */
-/* MOUSE TRACKING */
-/* ================================= */
-
-let mouseX =
-    window.innerWidth / 2;
-
-let mouseY =
-    window.innerHeight / 2;
-
-
-document.addEventListener(
-    "mousemove",
-    (event) => {
+    document.addEventListener("mousemove", (event) => {
 
         mouseX = event.clientX;
 
@@ -120,927 +52,766 @@ document.addEventListener(
 
         document.documentElement.style.setProperty(
             "--mouse-x",
-            mouseX + "px"
+            `${mouseX}px`
         );
 
         document.documentElement.style.setProperty(
             "--mouse-y",
-            mouseY + "px"
+            `${mouseY}px`
         );
 
-
-        updateRadar(
-            mouseX,
-            mouseY
-        );
-
-    }
-);
+    });
 
 
-/* ================================= */
-/* RADAR CURSOR */
-/* ================================= */
+    function animateCursor() {
 
-function updateRadar(x, y) {
+        cursorX +=
+            (mouseX - cursorX) * 0.16;
 
-    const radar =
-        document.getElementById(
-            "radar-cursor"
-        );
-
-    if (!radar) return;
+        cursorY +=
+            (mouseY - cursorY) * 0.16;
 
 
-    const rx =
-        Math.max(
-            10,
-            Math.min(
-                90,
-                (x / window.innerWidth) * 100
-            )
-        );
+        if (cursor) {
 
-
-    const ry =
-        Math.max(
-            10,
-            Math.min(
-                90,
-                (y / window.innerHeight) * 100
-            )
-        );
-
-
-    radar.style.left =
-        rx + "%";
-
-    radar.style.top =
-        ry + "%";
-
-}
-
-
-/* ================================= */
-/* CLICK BUBBLE BURST */
-/* ================================= */
-
-document.addEventListener(
-    "click",
-    (event) => {
-
-        if (
-            event.target.closest(
-                "a, button"
-            )
-        ) {
-
-            createBubbleBurst(
-                event.clientX,
-                event.clientY,
-                4
-            );
-
-            return;
+            cursor.style.transform =
+                `translate(${cursorX}px, ${cursorY}px) translate(-50%, -50%)`;
 
         }
 
 
-        createBubbleBurst(
-            event.clientX,
-            event.clientY,
-            9
+        requestAnimationFrame(
+            animateCursor
         );
 
     }
-);
 
 
-function createBubbleBurst(
-    x,
-    y,
-    amount = 8
-) {
+    animateCursor();
 
-    for (
-        let i = 0;
-        i < amount;
-        i++
-    ) {
 
-        const bubble =
-            document.createElement(
-                "span"
+    document
+        .querySelectorAll("a, button, .tilt-card")
+        .forEach(element => {
+
+            element.addEventListener(
+                "mouseenter",
+                () => {
+
+                    document.body
+                        .classList
+                        .add("cursor-hover");
+
+                }
             );
 
-        bubble.className =
-            "click-bubble";
+
+            element.addEventListener(
+                "mouseleave",
+                () => {
+
+                    document.body
+                        .classList
+                        .remove("cursor-hover");
+
+                }
+            );
+
+        });
 
 
-        bubble.style.left =
-            x + "px";
+    /* ========================================= */
+    /* WATER SPLASH CLICK */
+    /* ========================================= */
 
-        bubble.style.top =
-            y + "px";
+    document.addEventListener("click", (event) => {
 
+        const ripple =
+            document.createElement("div");
 
-        const angle =
-            Math.random()
-            * Math.PI
-            * 2;
+        ripple.className =
+            "water-ripple";
 
+        ripple.style.left =
+            `${event.clientX}px`;
 
-        const distance =
-            25 +
-            Math.random() * 100;
-
-
-        bubble.style.setProperty(
-            "--bubble-x",
-            Math.cos(angle)
-            * distance
-            + "px"
-        );
-
-
-        bubble.style.setProperty(
-            "--bubble-y",
-            Math.sin(angle)
-            * distance
-            - 40
-            + "px"
-        );
-
-
-        const size =
-            4 +
-            Math.random() * 10;
-
-
-        bubble.style.width =
-            size + "px";
-
-        bubble.style.height =
-            size + "px";
+        ripple.style.top =
+            `${event.clientY}px`;
 
 
         document.body.appendChild(
-            bubble
+            ripple
+        );
+
+
+        for (let i = 0; i < 10; i++) {
+
+            createSplashParticle(
+                event.clientX,
+                event.clientY
+            );
+
+        }
+
+
+        setTimeout(() => {
+
+            ripple.remove();
+
+        }, 900);
+
+    });
+
+
+    function createSplashParticle(x, y) {
+
+        const particle =
+            document.createElement("span");
+
+        particle.style.position =
+            "fixed";
+
+        particle.style.left =
+            `${x}px`;
+
+        particle.style.top =
+            `${y}px`;
+
+        particle.style.width =
+            "3px";
+
+        particle.style.height =
+            "3px";
+
+        particle.style.borderRadius =
+            "50%";
+
+        particle.style.background =
+            "#8ff7ff";
+
+        particle.style.boxShadow =
+            "0 0 10px #5cecff";
+
+        particle.style.pointerEvents =
+            "none";
+
+        particle.style.zIndex =
+            "9997";
+
+
+        const angle =
+            Math.random() *
+            Math.PI * 2;
+
+        const distance =
+            20 + Math.random() * 70;
+
+
+        particle.animate(
+
+            [
+
+                {
+                    transform:
+                        "translate(-50%,-50%) scale(1)",
+
+                    opacity: 1
+
+                },
+
+                {
+
+                    transform:
+                        `translate(
+                            ${Math.cos(angle) * distance}px,
+                            ${Math.sin(angle) * distance}px
+                        )
+                        scale(0)`,
+
+                    opacity: 0
+
+                }
+
+            ],
+
+            {
+
+                duration:
+                    600 + Math.random() * 400,
+
+                easing:
+                    "cubic-bezier(.2,.8,.2,1)"
+
+            }
+
+        );
+
+
+        document.body.appendChild(
+            particle
         );
 
 
         setTimeout(() => {
 
-            bubble.remove();
+            particle.remove();
 
-        }, 1400);
+        }, 1100);
 
     }
 
-}
+
+    /* ========================================= */
+    /* PARTICLES */
+    /* ========================================= */
+
+    const particleContainer =
+        document.querySelector(".particles");
 
 
-/* ================================= */
-/* BACKGROUND BUBBLES */
-/* ================================= */
+    if (particleContainer) {
 
-function createBackgroundBubbles() {
+        for (let i = 0; i < 80; i++) {
 
-    const layer =
-        document.querySelector(
-            ".bubble-layer"
-        );
+            const particle =
+                document.createElement("span");
 
-    if (!layer) return;
+            particle.className =
+                "particle";
 
 
-    for (
-        let i = 0;
-        i < 24;
-        i++
-    ) {
+            const size =
+                Math.random() * 3 + 1;
 
-        const bubble =
-            document.createElement(
-                "span"
+
+            particle.style.width =
+                `${size}px`;
+
+            particle.style.height =
+                `${size}px`;
+
+            particle.style.left =
+                `${Math.random() * 100}%`;
+
+            particle.style.animationDuration =
+                `${8 + Math.random() * 18}s`;
+
+            particle.style.animationDelay =
+                `${Math.random() * -20}s`;
+
+
+            particleContainer.appendChild(
+                particle
             );
 
-        bubble.className =
-            "bubble";
-
-
-        bubble.style.left =
-            Math.random() * 100 + "%";
-
-
-        bubble.style.setProperty(
-            "--size",
-            4 +
-            Math.random() * 22
-            + "px"
-        );
-
-
-        bubble.style.setProperty(
-            "--duration",
-            7 +
-            Math.random() * 12
-            + "s"
-        );
-
-
-        bubble.style.setProperty(
-            "--delay",
-            -Math.random() * 15
-            + "s"
-        );
-
-
-        bubble.style.setProperty(
-            "--drift",
-            (
-                Math.random() * 140
-                - 70
-            )
-            + "px"
-        );
-
-
-        layer.appendChild(
-            bubble
-        );
+        }
 
     }
 
-}
+
+    /* ========================================= */
+    /* BUBBLES */
+    /* ========================================= */
+
+    const bubbleContainer =
+        document.querySelector(".bubbles");
 
 
-createBackgroundBubbles();
+    if (bubbleContainer) {
+
+        for (let i = 0; i < 35; i++) {
+
+            const bubble =
+                document.createElement("span");
+
+            bubble.className =
+                "bubble";
 
 
-/* ================================= */
-/* PARTICLES */
-/* ================================= */
-
-function createParticles() {
-
-    const layer =
-        document.querySelector(
-            ".particle-layer"
-        );
-
-    if (!layer) return;
+            const size =
+                3 + Math.random() * 20;
 
 
-    for (
-        let i = 0;
-        i < 70;
-        i++
-    ) {
+            bubble.style.width =
+                `${size}px`;
 
-        const particle =
-            document.createElement(
-                "span"
+            bubble.style.height =
+                `${size}px`;
+
+            bubble.style.left =
+                `${Math.random() * 100}%`;
+
+            bubble.style.animationDuration =
+                `${7 + Math.random() * 16}s`;
+
+            bubble.style.animationDelay =
+                `${Math.random() * -20}s`;
+
+
+            bubbleContainer.appendChild(
+                bubble
             );
 
-        particle.className =
-            "particle";
-
-
-        particle.style.left =
-            Math.random() * 100
-            + "%";
-
-
-        particle.style.top =
-            Math.random() * 100
-            + "%";
-
-
-        particle.style.animationDuration =
-            8 +
-            Math.random() * 20
-            + "s";
-
-
-        particle.style.animationDelay =
-            -Math.random() * 20
-            + "s";
-
-
-        particle.style.opacity =
-            0.15 +
-            Math.random() * 0.65;
-
-
-        layer.appendChild(
-            particle
-        );
+        }
 
     }
 
-}
+
+    /* ========================================= */
+    /* FISH SCHOOL */
+    /* ========================================= */
+
+    const fishContainer =
+        document.querySelector(".fish-school");
 
 
-createParticles();
+    if (fishContainer) {
 
-
-/* ================================= */
-/* RANDOM FISH METEOR */
-/* ================================= */
-
-const fishTypes = [
-    "🐟",
-    "🐠",
-    "🐡"
-];
-
-
-function spawnFishMeteor() {
-
-    const layer =
-        document.querySelector(
-            ".fish-layer"
-        );
-
-    if (!layer) return;
-
-
-    const fish =
-        document.createElement(
-            "div"
-        );
-
-
-    fish.className =
-        "fish-meteor";
-
-
-    fish.textContent =
-        fishTypes[
-            Math.floor(
-                Math.random()
-                * fishTypes.length
-            )
+        const fishTypes = [
+            "🐟",
+            "🐠",
+            "🐡",
+            "🐟",
+            "🐠"
         ];
 
 
-    fish.style.top =
-        Math.random() * 75
-        + "%";
+        for (let i = 0; i < 12; i++) {
+
+            const fish =
+                document.createElement("span");
+
+            fish.className =
+                "fish";
 
 
-    fish.style.setProperty(
-        "--fish-y",
-        (
-            Math.random() * 160
-            - 80
-        )
-        + "px"
-    );
-
-
-    fish.style.setProperty(
-        "--fish-size",
-        (
-            18 +
-            Math.random() * 32
-        )
-        + "px"
-    );
-
-
-    fish.style.setProperty(
-        "--fish-speed",
-        (
-            5 +
-            Math.random() * 7
-        )
-        + "s"
-    );
-
-
-    fish.style.setProperty(
-        "--fish-rotate",
-        (
-            Math.random() * 15
-            - 7
-        )
-        + "deg"
-    );
-
-
-    layer.appendChild(
-        fish
-    );
-
-
-    setTimeout(() => {
-
-        fish.remove();
-
-    }, 14000);
-
-}
-
-
-/* สุ่มปลาทุก 2.5–6 วินาที */
-
-function randomFishLoop() {
-
-    spawnFishMeteor();
-
-
-    const next =
-        2500 +
-        Math.random() * 3500;
-
-
-    setTimeout(
-        randomFishLoop,
-        next
-    );
-
-}
-
-
-randomFishLoop();
-
-
-/* ================================= */
-/* 3D TILT CARDS */
-/* ================================= */
-
-const tiltCards =
-    document.querySelectorAll(
-        ".tilt-card"
-    );
-
-
-tiltCards.forEach(
-    (card) => {
-
-        card.addEventListener(
-            "mousemove",
-            (event) => {
-
-                const rect =
-                    card.getBoundingClientRect();
-
-
-                const x =
-                    event.clientX
-                    - rect.left;
-
-
-                const y =
-                    event.clientY
-                    - rect.top;
-
-
-                const centerX =
-                    rect.width / 2;
-
-
-                const centerY =
-                    rect.height / 2;
-
-
-                const rotateY =
-                    (
-                        x - centerX
+            fish.textContent =
+                fishTypes[
+                    Math.floor(
+                        Math.random() *
+                        fishTypes.length
                     )
-                    /
-                    centerX
-                    * 8;
+                ];
 
 
-                const rotateX =
-                    (
-                        centerY - y
-                    )
-                    /
-                    centerY
-                    * 8;
+            fish.style.top =
+                `${10 + Math.random() * 75}%`;
+
+            fish.style.fontSize =
+                `${12 + Math.random() * 22}px`;
+
+            fish.style.animationDuration =
+                `${16 + Math.random() * 20}s`;
+
+            fish.style.animationDelay =
+                `${Math.random() * -30}s`;
 
 
-                card.style.transform =
-                    `
-                    perspective(900px)
-                    rotateX(${rotateX}deg)
-                    rotateY(${rotateY}deg)
-                    translateY(-5px)
-                    scale(1.01)
-                    `;
+            fishContainer.appendChild(
+                fish
+            );
 
-            }
+        }
+
+    }
+
+
+    /* ========================================= */
+    /* SCROLL DEPTH */
+    /* ========================================= */
+
+    const depthNumber =
+        document.querySelector(
+            "#depthNumber"
+        );
+
+    const depthFill =
+        document.querySelector(
+            "#depthFill"
         );
 
 
-        card.addEventListener(
-            "mouseleave",
-            () => {
+    function updateDepth() {
 
-                card.style.transform =
-                    "";
+        const scrollTop =
+            window.scrollY;
 
-            }
+        const maxScroll =
+            document.documentElement.scrollHeight -
+            window.innerHeight;
+
+
+        let percent =
+            maxScroll > 0
+                ? scrollTop / maxScroll
+                : 0;
+
+
+        percent =
+            Math.min(
+                1,
+                Math.max(0, percent)
+            );
+
+
+        const depth =
+            Math.round(
+                percent * 4500
+            );
+
+
+        if (depthNumber) {
+
+            depthNumber.textContent =
+                depth.toString()
+                    .padStart(4, "0");
+
+        }
+
+
+        if (depthFill) {
+
+            depthFill.style.height =
+                `${percent * 100}%`;
+
+        }
+
+
+        document.body.style.setProperty(
+            "--scroll-depth",
+            percent
+        );
+
+
+        /* PARALLAX */
+
+        document.documentElement.style.setProperty(
+            "--scroll-y",
+            `${scrollTop}px`
         );
 
     }
-);
 
 
-/* ================================= */
-/* 360 DEGREE CLICK EFFECT */
-/* ================================= */
-
-const spinCards =
-    document.querySelectorAll(
-        ".spin-card"
+    window.addEventListener(
+        "scroll",
+        updateDepth,
+        { passive: true }
     );
 
 
-spinCards.forEach(
-    (card) => {
-
-        card.addEventListener(
-            "click",
-            (event) => {
-
-                if (
-                    event.target.closest(
-                        "a"
-                    )
-                ) return;
+    updateDepth();
 
 
-                card.classList.remove(
-                    "spin-now"
-                );
+    /* ========================================= */
+    /* SCROLL REVEAL */
+    /* ========================================= */
 
-
-                void card.offsetWidth;
-
-
-                card.classList.add(
-                    "spin-now"
-                );
-
-
-                setTimeout(() => {
-
-                    card.classList.remove(
-                        "spin-now"
-                    );
-
-                }, 900);
-
-            }
+    const revealElements =
+        document.querySelectorAll(
+            ".reveal"
         );
 
-    }
-);
 
+    const revealObserver =
+        new IntersectionObserver(
 
-/* สร้าง Animation 360° */
+            entries => {
 
-const spinStyle =
-    document.createElement(
-        "style"
-    );
-
-
-spinStyle.textContent = `
-
-.spin-now {
-
-    animation:
-        cardSpin 0.9s ease-in-out;
-
-}
-
-@keyframes cardSpin {
-
-    0% {
-
-        transform:
-            perspective(900px)
-            rotateY(0deg);
-
-    }
-
-    50% {
-
-        transform:
-            perspective(900px)
-            rotateY(180deg)
-            scale(1.05);
-
-    }
-
-    100% {
-
-        transform:
-            perspective(900px)
-            rotateY(360deg);
-
-    }
-
-}
-
-`;
-
-
-document.head.appendChild(
-    spinStyle
-);
-
-
-/* ================================= */
-/* SCROLL REVEAL */
-/* ================================= */
-
-const revealElements =
-    document.querySelectorAll(
-        ".reveal"
-    );
-
-
-const revealObserver =
-    new IntersectionObserver(
-        (entries) => {
-
-            entries.forEach(
-                (entry) => {
+                entries.forEach(entry => {
 
                     if (
                         entry.isIntersecting
                     ) {
 
-                        entry.target.classList.add(
-                            "show"
-                        );
+                        entry.target
+                            .classList
+                            .add("visible");
 
                     }
+
+                });
+
+            },
+
+            {
+                threshold: 0.12
+            }
+
+        );
+
+
+    revealElements.forEach(
+        element => {
+
+            revealObserver.observe(
+                element
+            );
+
+        }
+    );
+
+
+    /* ========================================= */
+    /* 3D TILT */
+    /* ========================================= */
+
+    document
+        .querySelectorAll(".tilt-card")
+        .forEach(card => {
+
+
+            card.addEventListener(
+                "mousemove",
+                event => {
+
+                    const rect =
+                        card.getBoundingClientRect();
+
+
+                    const x =
+                        event.clientX -
+                        rect.left;
+
+
+                    const y =
+                        event.clientY -
+                        rect.top;
+
+
+                    const centerX =
+                        rect.width / 2;
+
+
+                    const centerY =
+                        rect.height / 2;
+
+
+                    const rotateX =
+                        (y - centerY) /
+                        18;
+
+
+                    const rotateY =
+                        (centerX - x) /
+                        18;
+
+
+                    card.style.transform =
+                        `perspective(900px)
+                         rotateX(${rotateX}deg)
+                         rotateY(${rotateY}deg)
+                         translateY(-5px)`;
+
+
+                    card.style.setProperty(
+                        "--mx",
+                        `${(x / rect.width) * 100}%`
+                    );
+
+
+                    card.style.setProperty(
+                        "--my",
+                        `${(y / rect.height) * 100}%`
+                    );
 
                 }
             );
 
-        },
-        {
-            threshold: 0.12
-        }
-    );
 
+            card.addEventListener(
+                "mouseleave",
+                () => {
 
-revealElements.forEach(
-    (element) => {
+                    card.style.transform =
+                        "";
 
-        revealObserver.observe(
-            element
-        );
+                }
+            );
 
-    }
-);
+        });
 
 
-/* ================================= */
-/* DEPTH METER */
-/* ================================= */
+    /* ========================================= */
+    /* MAGNETIC BUTTONS */
+    /* ========================================= */
 
-function updateDepth() {
+    document
+        .querySelectorAll(".btn")
+        .forEach(button => {
 
-    const depthElement =
-        document.getElementById(
-            "depth-value"
-        );
 
+            button.addEventListener(
+                "mousemove",
+                event => {
 
-    const scrollTop =
-        window.scrollY;
+                    const rect =
+                        button.getBoundingClientRect();
 
 
-    const maxScroll =
-        document.documentElement
-            .scrollHeight
-        -
-        window.innerHeight;
+                    const x =
+                        event.clientX -
+                        rect.left -
+                        rect.width / 2;
 
 
-    const progress =
-        maxScroll > 0
-            ? scrollTop / maxScroll
-            : 0;
+                    const y =
+                        event.clientY -
+                        rect.top -
+                        rect.height / 2;
 
 
-    const depth =
-        Math.round(
-            progress * 4500
-        );
+                    button.style.transform =
+                        `translate(
+                            ${x * 0.08}px,
+                            ${y * 0.08}px
+                        )`;
 
+                }
+            );
 
-    if (depthElement) {
 
-        depthElement.textContent =
-            depth
-            .toString()
-            .padStart(4, "0")
-            + " M";
+            button.addEventListener(
+                "mouseleave",
+                () => {
 
-    }
+                    button.style.transform =
+                        "";
 
+                }
+            );
 
-    document.documentElement.style.setProperty(
-        "--depth",
-        progress
-    );
+        });
 
-}
 
+    /* ========================================= */
+    /* MOUSE LIGHT */
+    /* ========================================= */
 
-window.addEventListener(
-    "scroll",
-    updateDepth
-);
+    document.addEventListener(
+        "mousemove",
+        event => {
 
+            document.documentElement.style.setProperty(
+                "--mouse-x",
+                `${event.clientX}px`
+            );
 
-updateDepth();
-
-
-/* ================================= */
-/* MAGNETIC BUTTONS */
-/* ================================= */
-
-const magneticButtons =
-    document.querySelectorAll(
-        ".magnetic"
-    );
-
-
-magneticButtons.forEach(
-    (button) => {
-
-        button.addEventListener(
-            "mousemove",
-            (event) => {
-
-                const rect =
-                    button.getBoundingClientRect();
-
-
-                const x =
-                    event.clientX
-                    -
-                    rect.left
-                    -
-                    rect.width / 2;
-
-
-                const y =
-                    event.clientY
-                    -
-                    rect.top
-                    -
-                    rect.height / 2;
-
-
-                button.style.transform =
-                    `
-                    translate(
-                        ${x * 0.12}px,
-                        ${y * 0.12}px
-                    )
-                    `;
-
-            }
-        );
-
-
-        button.addEventListener(
-            "mouseleave",
-            () => {
-
-                button.style.transform =
-                    "";
-
-            }
-        );
-
-    }
-);
-
-
-/* ================================= */
-/* TEXT SHIMMER */
-/* ================================= */
-
-const shimmerElements =
-    document.querySelectorAll(
-        "h1, h2, h3, .glow-text"
-    );
-
-
-shimmerElements.forEach(
-    (element) => {
-
-        element.addEventListener(
-            "mouseenter",
-            () => {
-
-                element.style.textShadow =
-                    `
-                    0 0 8px rgba(80,230,255,0.5),
-                    0 0 25px rgba(80,230,255,0.3)
-                    `;
-
-            }
-        );
-
-
-        element.addEventListener(
-            "mouseleave",
-            () => {
-
-                element.style.textShadow =
-                    "";
-
-            }
-        );
-
-    }
-);
-
-
-/* ================================= */
-/* RESIZE */
-/* ================================= */
-
-window.addEventListener(
-    "resize",
-    () => {
-
-        updateRadar(
-            mouseX,
-            mouseY
-        );
-
-        updateDepth();
-
-    }
-);
-
-
-/* ================================= */
-/* EXTRA: PERIODIC BUBBLE BURST */
-/* ================================= */
-
-setInterval(
-    () => {
-
-        if (
-            Math.random() > 0.55
-        ) {
-
-            const x =
-                Math.random()
-                * window.innerWidth;
-
-
-            const y =
-                window.innerHeight
-                *
-                (
-                    0.25
-                    +
-                    Math.random()
-                    * 0.55
-                );
-
-
-            createBubbleBurst(
-                x,
-                y,
-                3
+            document.documentElement.style.setProperty(
+                "--mouse-y",
+                `${event.clientY}px`
             );
 
         }
-
-    },
-    5000
-);
+    );
 
 
-/* ================================= */
-/* CONSOLE */
-/* ================================= */
+    /* ========================================= */
+    /* THEME */
+    /* ========================================= */
 
-console.log(
-    "%c🌊 MY OCEAN SYSTEM ONLINE",
-    "color:#58e8ff;font-size:18px;font-weight:bold;"
-);
+    const themeButton =
+        document.querySelector(
+            "#themeButton"
+        );
 
-console.log(
-    "%cDive deeper. Explore more.",
-    "color:#88aebd;font-size:12px;"
-);
+
+    const savedTheme =
+        localStorage.getItem(
+            "myOceanTheme"
+        );
+
+
+    if (savedTheme === "surface") {
+
+        document.body.classList.add(
+            "surface-mode"
+        );
+
+    }
+
+
+    if (themeButton) {
+
+        themeButton.addEventListener(
+            "click",
+            () => {
+
+                document.body.classList.toggle(
+                    "surface-mode"
+                );
+
+
+                const isSurface =
+                    document.body.classList.contains(
+                        "surface-mode"
+                    );
+
+
+                localStorage.setItem(
+                    "myOceanTheme",
+                    isSurface
+                        ? "surface"
+                        : "deep"
+                );
+
+            }
+        );
+
+    }
+
+
+    /* ========================================= */
+    /* KEYBOARD EASTER EGG */
+    /* ========================================= */
+
+    let keySequence = "";
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            keySequence +=
+                event.key.toLowerCase();
+
+
+            if (
+                keySequence.length > 12
+            ) {
+
+                keySequence =
+                    keySequence.slice(-12);
+
+            }
+
+
+            if (
+                keySequence.includes(
+                    "ocean"
+                )
+            ) {
+
+                document.body.classList.add(
+                    "ocean-pulse"
+                );
+
+
+                setTimeout(() => {
+
+                    document.body.classList.remove(
+                        "ocean-pulse"
+                    );
+
+                }, 1500);
+
+
+                keySequence = "";
+
+            }
+
+        }
+    );
+
+
+});
