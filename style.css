@@ -3545,299 +3545,280 @@ button {
     }
 
 }
+
+
 /* =========================================================
-   MY OCEAN // ABYSSAL FX UPGRADE
-   Additive enhancement layer — keeps the original design.
+   MY OCEAN // ABYSSAL FX PATCH
+   ADD-ON ONLY — keeps the original design intact
    ========================================================= */
 
 :root {
-    --fx-cyan: #63f3ff;
-    --fx-blue: #1677ff;
-    --fx-deep: #010814;
-    --fx-panel: rgba(4, 24, 42, .68);
-    --mouse-x: 50vw;
-    --mouse-y: 50vh;
-    --scroll-depth: 0;
+    --abyss-bg: #020b18;
+    --abyss-mid: #06243b;
+    --abyss-cyan: #72efff;
+    --abyss-blue: #258dff;
 }
 
-body {
-    position: relative;
-    isolation: isolate;
-    transition: background 1s ease, color .7s ease;
+/* Deep-but-visible DAY mode */
+body.surface-mode {
+    background:
+        radial-gradient(circle at 50% -10%, #15506b 0%, #092b43 32%, #031322 72%, #010812 100%) !important;
 }
 
-/* Moving cursor spotlight */
+body.surface-mode .ocean-world {
+    filter: brightness(1.08) saturate(.92);
+}
+
+/* DARK NIGHT mode */
+body:not(.surface-mode) {
+    background:
+        radial-gradient(circle at 50% -15%, #082b42 0%, #031524 30%, #010812 67%, #00040a 100%);
+}
+
+body:not(.surface-mode) .water-light {
+    opacity: .72;
+}
+
+/* Mouse spotlight */
 body::after {
     content: "";
     position: fixed;
     inset: 0;
     pointer-events: none;
-    z-index: -1;
-    background: radial-gradient(circle 260px at var(--mouse-x) var(--mouse-y), rgba(92,236,255,.08), transparent 70%);
+    z-index: 2;
+    background:
+        radial-gradient(
+            280px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(92,236,255,.075),
+            transparent 70%
+        );
     mix-blend-mode: screen;
-    opacity: .8;
 }
 
-/* Deep-day mode: still underwater, never bright */
-body.surface-mode {
-    background:
-        radial-gradient(circle at 50% -15%, #145d79 0%, #082f50 28%, #03182d 62%, #020b18 100%) !important;
-}
-
-body.surface-mode .ocean-world,
-body.surface-mode .ocean-background {
-    filter: brightness(1.14) saturate(.92);
-}
-
-body.surface-mode .deep-fog {
-    opacity: .48;
-}
-
-body.surface-mode .theme-button {
-    color: #d5fbff;
-    border-color: rgba(140,245,255,.55);
-}
-
-body:not(.surface-mode) .theme-button::after {
-    content: "NIGHT";
-}
-
-body.surface-mode .theme-button::after {
-    content: "DAY";
-}
-
-.theme-button {
-    position: relative;
-    overflow: hidden;
-}
-
-.theme-button::after {
-    position: absolute;
-    font-family: Orbitron, sans-serif;
-    font-size: 5px;
-    letter-spacing: 1px;
-    bottom: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    opacity: .75;
+/* Click bubble */
+.abyss-bubble {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: var(--bubble-size, 10px);
+    height: var(--bubble-size, 10px);
+    border: 1px solid rgba(157,248,255,.75);
+    border-radius: 50%;
     pointer-events: none;
+    z-index: 9996;
+    box-shadow: inset 0 0 8px rgba(255,255,255,.15), 0 0 12px rgba(92,236,255,.22);
+    animation: abyssBubble 1.35s cubic-bezier(.2,.8,.2,1) forwards;
 }
 
-/* Extra atmosphere */
-.ocean-world::before {
+@keyframes abyssBubble {
+    0%   { opacity: 0; transform: translate(-50%,-50%) scale(.25); }
+    15%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% - var(--rise))) scale(1.25); }
+}
+
+/* Fast fish meteor */
+.fish-meteor {
+    position: fixed;
+    left: -180px;
+    top: var(--meteor-y);
+    z-index: 20;
+    pointer-events: none;
+    font-size: var(--meteor-size);
+    filter: drop-shadow(0 0 8px rgba(92,236,255,.55));
+    animation: fishMeteor var(--meteor-duration) linear forwards;
+}
+
+.fish-meteor::after {
     content: "";
     position: absolute;
-    inset: -20%;
+    width: var(--trail);
+    height: 2px;
+    right: 80%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg, transparent, rgba(92,236,255,.7));
+    box-shadow: 0 0 10px rgba(92,236,255,.35);
+}
+
+@keyframes fishMeteor {
+    from { transform: translateX(-12vw) scaleX(1); opacity: 0; }
+    8%   { opacity: 1; }
+    88%  { opacity: .9; }
+    to   { transform: translateX(125vw) scaleX(1); opacity: 0; }
+}
+
+/* Extra coral at the seafloor */
+.abyss-coral-field {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 125px;
+    z-index: 4;
+    pointer-events: none;
+    overflow: hidden;
+    opacity: .72;
     background:
-        radial-gradient(ellipse at 20% 70%, rgba(24,126,180,.12), transparent 28%),
-        radial-gradient(ellipse at 80% 35%, rgba(20,92,180,.10), transparent 30%),
-        radial-gradient(ellipse at 50% 100%, rgba(0,30,65,.45), transparent 45%);
-    animation: abyssBreath 10s ease-in-out infinite alternate;
+        linear-gradient(to top, rgba(1,7,14,.92), transparent 78%);
 }
 
-@keyframes abyssBreath {
-    from { transform: scale(1); opacity: .7; }
-    to { transform: scale(1.08); opacity: 1; }
-}
-
-/* Extra coral branches injected by JS */
-.extra-coral {
+.abyss-coral {
     position: absolute;
-    bottom: -8px;
-    width: 9px;
-    height: var(--coral-h, 100px);
-    left: var(--coral-x, 50%);
-    background: linear-gradient(to top, #06283b, #0d6a80);
-    border-radius: 100% 100% 5px 5px;
-    opacity: .42;
-    transform: rotate(var(--coral-r, 0deg));
-    box-shadow: 0 0 22px rgba(35,204,224,.12);
+    bottom: -10px;
+    width: 7px;
+    height: var(--coral-h);
+    border-radius: 8px 8px 2px 2px;
+    background: linear-gradient(to top, #123748, #4b9daf);
+    box-shadow: 0 0 10px rgba(92,236,255,.16);
+    transform-origin: bottom center;
+    animation: coralSway 4s ease-in-out infinite alternate;
 }
 
-.extra-coral::before,
-.extra-coral::after {
+.abyss-coral::before,
+.abyss-coral::after {
     content: "";
     position: absolute;
-    bottom: 35%;
-    width: 8px;
+    bottom: 48%;
+    width: 6px;
     height: 55px;
+    border-radius: 8px;
     background: inherit;
-    border-radius: 100%;
 }
 
-.extra-coral::before { left: -15px; transform: rotate(-28deg); }
-.extra-coral::after { right: -15px; transform: rotate(28deg); }
+.abyss-coral::before {
+    left: -16px;
+    transform: rotate(-28deg);
+}
 
-/* Sonar / radar */
-.sonar-hud {
+.abyss-coral::after {
+    right: -16px;
+    height: 45px;
+    transform: rotate(30deg);
+}
+
+@keyframes coralSway {
+    from { transform: rotate(-2deg); }
+    to   { transform: rotate(3deg); }
+}
+
+/* Sonar radar */
+.abyss-sonar {
     position: fixed;
     left: 24px;
     bottom: 24px;
-    width: 150px;
-    height: 150px;
-    z-index: 450;
-    border: 1px solid rgba(92,236,255,.25);
-    background: rgba(1,12,24,.42);
-    backdrop-filter: blur(8px);
-    box-shadow: 0 0 35px rgba(0,150,255,.08), inset 0 0 30px rgba(0,220,255,.04);
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 88%, 4% 88%, 4% 12%, 0 12%);
+    width: 118px;
+    height: 118px;
+    border: 1px solid rgba(92,236,255,.28);
+    border-radius: 50%;
+    z-index: 50;
+    pointer-events: none;
+    overflow: hidden;
+    background:
+        radial-gradient(circle, rgba(92,236,255,.08), rgba(2,10,18,.38) 68%, rgba(2,10,18,.7));
+    box-shadow: 0 0 30px rgba(0,150,220,.12);
 }
 
-.sonar-hud::before,
-.sonar-hud::after {
+.abyss-sonar::before,
+.abyss-sonar::after {
     content: "";
     position: absolute;
-    inset: 14px;
-    border: 1px solid rgba(92,236,255,.18);
+    inset: 13px;
+    border: 1px solid rgba(92,236,255,.16);
     border-radius: 50%;
 }
 
-.sonar-hud::after { inset: 42px; }
+.abyss-sonar::after {
+    inset: 50%;
+    width: 1px;
+    height: 100%;
+    border: 0;
+    border-left: 1px solid rgba(92,236,255,.12);
+    transform: translate(-50%,-50%);
+}
 
-.sonar-sweep {
+.sonar-line {
     position: absolute;
     left: 50%;
     top: 50%;
-    width: 50%;
+    width: 48%;
     height: 1px;
     transform-origin: left center;
-    background: linear-gradient(90deg, rgba(92,236,255,.9), transparent);
-    box-shadow: 0 0 8px rgba(92,236,255,.8);
-    animation: sonarSweep 2.7s linear infinite;
+    background: linear-gradient(90deg, rgba(92,236,255,.8), transparent);
+    animation: sonarSweep 2.4s linear infinite;
 }
-
-.sonar-sweep::after {
-    content: "";
-    position: absolute;
-    right: 0;
-    top: -2px;
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--fx-cyan);
-    box-shadow: 0 0 14px var(--fx-cyan);
-}
-
-.sonar-cross-x,
-.sonar-cross-y {
-    position: absolute;
-    background: rgba(92,236,255,.1);
-}
-
-.sonar-cross-x { left: 14px; right: 14px; top: 50%; height: 1px; }
-.sonar-cross-y { top: 14px; bottom: 14px; left: 50%; width: 1px; }
 
 .sonar-dot {
     position: absolute;
-    width: 7px;
-    height: 7px;
+    width: 5px;
+    height: 5px;
     border-radius: 50%;
-    left: 50%;
-    top: 50%;
-    background: white;
-    box-shadow: 0 0 8px 2px var(--fx-cyan);
-    transform: translate(-50%, -50%);
-    transition: left .12s linear, top .12s linear;
+    background: #9cf8ff;
+    box-shadow: 0 0 10px #5cecff;
+    transform: translate(-50%,-50%);
 }
 
 .sonar-label {
     position: absolute;
-    left: 12px;
-    top: 8px;
+    left: 50%;
+    bottom: 8px;
+    transform: translateX(-50%);
     font: 7px/1 Orbitron, sans-serif;
     letter-spacing: 2px;
-    color: rgba(155,240,250,.6);
+    color: rgba(160,220,230,.6);
 }
 
-.sonar-readout {
-    position: absolute;
-    right: 10px;
-    bottom: 8px;
-    font: 6px/1 Orbitron, sans-serif;
-    color: rgba(155,240,250,.45);
+@keyframes sonarSweep {
+    to { transform: rotate(360deg); }
 }
 
-@keyframes sonarSweep { to { transform: rotate(360deg); } }
-
-/* Fish meteor */
-.fish-meteor {
-    position: fixed;
-    left: -160px;
-    z-index: 700;
-    pointer-events: none;
-    font-size: var(--meteor-size, 22px);
-    filter: drop-shadow(0 0 10px rgba(92,236,255,.85));
-    will-change: transform, opacity;
+/* 360-degree interaction */
+.abyss-spin {
+    animation: abyssSpin .9s cubic-bezier(.2,.8,.2,1);
 }
 
-.fish-meteor::before {
-    content: "";
-    position: absolute;
-    width: 150px;
-    height: 2px;
-    right: 75%;
-    top: 50%;
-    transform: translateY(-50%);
-    background: linear-gradient(90deg, transparent, rgba(92,236,255,.7));
-    box-shadow: 0 0 10px rgba(92,236,255,.45);
-}
-
-/* Click bubbles */
-.click-bubble {
-    position: fixed;
-    z-index: 9997;
-    pointer-events: none;
-    border: 1px solid rgba(168,248,255,.72);
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 25%, rgba(255,255,255,.45), transparent 30%);
-    box-shadow: inset 2px 2px 5px rgba(255,255,255,.25), 0 0 12px rgba(92,236,255,.3);
-}
-
-/* 360° interactive spin */
-.fx-spin-360 {
-    animation: fxSpin360 .85s cubic-bezier(.2,.8,.2,1) both;
-}
-
-@keyframes fxSpin360 {
-    0% { transform: perspective(900px) rotateY(0deg) scale(1); }
-    55% { transform: perspective(900px) rotateY(210deg) scale(1.035); }
+@keyframes abyssSpin {
+    0%   { transform: perspective(900px) rotateY(0deg) scale(1); }
+    55%  { transform: perspective(900px) rotateY(200deg) scale(1.025); }
     100% { transform: perspective(900px) rotateY(360deg) scale(1); }
 }
 
-/* Energy click pulse */
-.fx-energy {
-    animation: fxEnergy .7s ease both;
+.abyss-energy {
+    animation: abyssEnergy .65s ease-out;
 }
 
-@keyframes fxEnergy {
-    0% { filter: brightness(1); }
-    35% { filter: brightness(1.8) drop-shadow(0 0 22px rgba(92,236,255,.7)); }
-    100% { filter: brightness(1); }
+@keyframes abyssEnergy {
+    0%   { box-shadow: 0 0 0 rgba(92,236,255,0); }
+    40%  { box-shadow: 0 0 45px rgba(92,236,255,.38), inset 0 0 30px rgba(92,236,255,.08); }
+    100% { box-shadow: 0 0 0 rgba(92,236,255,0); }
 }
 
-/* Scroll-dependent atmosphere */
-body::marker { display: none; }
-
-body[data-depth="deep"] .deep-fog { opacity: .86; }
-
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: .001ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-    }
-    .fish-meteor { display: none !important; }
-}
-
+/* Better mobile behavior */
 @media (max-width: 700px) {
-    .sonar-hud {
-        width: 108px;
-        height: 108px;
+    .abyss-sonar {
+        width: 82px;
+        height: 82px;
         left: 12px;
         bottom: 12px;
         transform: scale(.82);
         transform-origin: bottom left;
     }
-    .fish-meteor { font-size: 18px; }
+
+    .abyss-coral-field {
+        height: 90px;
+    }
+
+    body::after {
+        display: none;
+    }
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .fish-meteor,
+    .abyss-coral,
+    .sonar-line,
+    .abyss-spin,
+    .abyss-energy {
+        animation: none !important;
+    }
+}
+
