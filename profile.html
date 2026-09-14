@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>My Ocean | Profile</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="script.js" defer></script>
+
+</head>
+
+<body data-page="profile">
+
+
+    <!-- LOADER -->
+
+    <div id="loader">
+
+        <div class="loader-ocean">
+            <div class="loader-ring"></div>
+            <div class="loader-diver">🤿</div>
+        </div>
+
+        <div class="loader-title">
+            DIVING INTO MY WORLD
+        </div>
+
+        <div class="loader-subtitle">
+            Exploring my profile...
+        </div>
+
+        <div class="loader-dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+    </div>
+
+
+    <!-- OCEAN -->
+
+    <div class="ocean-scene">
+
+        <div class="water-light"></div>
+
+        <div class="caustics"></div>
+
+        <div class="depth-fog"></div>
+
+        <div class="particle-layer"></div>
+
+        <div class="bubble-layer"></div>
+
+        <div class="fish-layer"></div>
+
+
+        <div class="coral-bed">
+
+            <span class="coral coral-1"></span>
+            <span class="coral coral-2"></span>
+            <span class="coral coral-3"></span>
+            <span class="coral coral-4"></span>
+            <span class="coral coral-5"></span>
+            <span class="coral coral-6"></span>
+            <span class="coral coral-7"></span>
+            <span class="coral coral-8"></span>
+            <span class="coral coral-9"></span>
+            <span class="coral coral-10"></span>
+            <span class="coral coral-11"></span>
+            <span class="coral coral-12"></span>
+
+        </div>
+
+    </div>
+
+
+    <div id="cursor-glow"></div>
+
+    <div id="coral-cursor">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <a href="index.html" class="logo">
+
+            <span class="logo-wave">
+                🌊
+            </span>
+
+            <span>
+
+                <strong>
+                    MY OCEAN
+                </strong>
+
+                <small>
+                    STUDENT PORTFOLIO
+                </small>
+
+            </span>
+
+        </a>
+
+
+        <nav class="nav">
+
+            <a href="index.html">
+                HOME
+            </a>
+
+            <a href="profile.html" class="active">
+                PROFILE
+            </a>
+
+            <a href="education.html">
+                EDUCATION
+            </a>
+
+            <a href="hobby.html">
+                HOBBIES
+            </a>
+
+            <a href="contact.html">
+                CONTACT
+            </a>
+
+        </nav>
+
+
+        <button id="theme-toggle"
+                class="theme-button">
+            ☀️
+        </button>
+
+    </header>
+
+
+    <!-- HUD -->
+
+    <div class="hud hud-top-left">
+
+        <div class="hud-line"></div>
+
+        <span>
+            SUBJECT
+        </span>
+
+        <strong>
+            ABOUT ME
+        </strong>
+
+    </div>
+
+
+    <div class="hud hud-top-right">
+
+        <span>
+            DEPTH
+        </span>
+
+        <strong id="depth-value">
+            000 M
+        </strong>
+
+    </div>
+
+
+    <main>
+
+        <!-- PAGE HERO -->
+
+        <section class="page-hero">
+
+            <div>
+
+                <div class="eyebrow">
+                    01 / ABOUT ME
+                </div>
+
+                <h1>
+                    GET TO KNOW
+                    <span>ME.</span>
+                </h1>
+
+                <p>
+                    Dive deeper and discover
+                    the person behind this ocean.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- PROFILE -->
+
+        <section class="profile-section reveal">
+
+
+            <div class="profile-photo-card tilt-card">
+
+                <div class="photo-frame">
+
+                    <img
+                        src="images/GamRed.jpeg"
+                        alt="Profile photo"
+                        onerror="this.style.display='none'; this.parentElement.classList.add('image-missing');"
+                    >
+
+                    <div class="image-fallback">
+                        🐚
+                        <span>
+                            PROFILE IMAGE
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="photo-label">
+
+                    <span>
+                        M.3 STUDENT
+                    </span>
+
+                    <strong>
+                        2026
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-info">
+
+                <div class="mini-label">
+                    IDENTIFICATION
+                </div>
+
+                <h2 class="glow-text">
+                    สุพิชญา บุตรต๊ะ
+                </h2>
+
+                <p class="nickname">
+                    “แก้มหอม”
+                </p>
+
+
+                <div class="info-grid">
+
+                    <div class="info-box">
+
+                        <span>
+                            AGE
+                        </span>
+
+                        <strong>
+                            14 ปี
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <span>
+                            BIRTHDAY
+                        </span>
+
+                        <strong>
+                            18 พ.ย. 2554
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <span>
+                            PROVINCE
+                        </span>
+
+                        <strong>
+                            เชียงใหม่
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <span>
+                            SCHOOL
+                        </span>
+
+                        <strong>
+                            จอมทอง
+                        </strong>
+
+                    </div>
+
+
+                    <div class="info-box">
+
+                        <span>
+                            LEVEL
+                        </span>
+
+                        <strong>
+                            ม.3/2
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="about-box glass-card">
+
+                    <span>
+                        ABOUT MYSELF
+                    </span>
+
+                    <p>
+                        ฉันเป็นนักเรียนชั้นมัธยมศึกษาปีที่ 3
+                        ที่ชอบเรียนรู้สิ่งใหม่ ๆ
+                        และกำลังค้นหาความสนใจของตัวเอง
+                        โดยเฉพาะงานศิลปะและทัศนศิลป์
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+        <!-- INTEREST -->
+
+        <section class="section reveal">
+
+            <div class="section-heading">
+
+                <span>
+                    MY INTEREST
+                </span>
+
+                <h2>
+                    Things that make
+                    <em>my world colorful.</em>
+                </h2>
+
+            </div>
+
+
+            <div class="interest-grid">
+
+                <div class="interest-card tilt-card">
+
+                    <div class="interest-icon">
+                        🎨
+                    </div>
+
+                    <h3>
+                        DRAWING
+                    </h3>
+
+                    <p>
+                        การวาดภาพคือหนึ่งในสิ่งที่ฉัน
+                        สนใจและชอบใช้เวลาว่างทำ
+                    </p>
+
+                </div>
+
+
+                <div class="interest-card tilt-card">
+
+                    <div class="interest-icon">
+                        🖌️
+                    </div>
+
+                    <h3>
+                        PAINTING
+                    </h3>
+
+                    <p>
+                        การระบายสีช่วยให้ฉัน
+                        ผ่อนคลายและได้สร้างสรรค์
+                    </p>
+
+                </div>
+
+
+                <div class="interest-card tilt-card">
+
+                    <div class="interest-icon">
+                        🌊
+                    </div>
+
+                    <h3>
+                        EXPLORING
+                    </h3>
+
+                    <p>
+                        ฉันชอบเรียนรู้สิ่งใหม่
+                        และค้นหาความสามารถของตัวเอง
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- RADAR -->
+
+    <div class="radar">
+
+        <div class="radar-grid"></div>
+
+        <div class="radar-sweep"></div>
+
+        <div id="radar-cursor"></div>
+
+        <div class="radar-center"></div>
+
+        <span class="radar-text">
+            RADAR
+        </span>
+
+    </div>
+
+
+    <footer>
+
+        <div>
+            🌊 MY OCEAN
+        </div>
+
+        <span>
+            Student Portfolio · Exploring my world, one wave at a time.
+        </span>
+
+    </footer>
+
+</body>
+</html>
