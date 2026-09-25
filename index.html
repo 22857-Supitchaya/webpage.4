@@ -1,374 +1,4350 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>My Ocean | Home</title>
+<meta charset="UTF-8">
 
-    <link rel="stylesheet" href="style.css">
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
 
-    <script src="script.js" defer></script>
+<title>
+    AQUA-X // My Ocean World
+</title>
+
+<style>
+
+/* =========================================================
+   AQUA-X // ONE FILE EDITION
+   HTML + CSS + JAVASCRIPT
+   ========================================================= */
+
+:root{
+
+    --bg:
+        #01060b;
+
+    --bg2:
+        #02131b;
+
+    --panel:
+        rgba(4,22,30,.72);
+
+    --text:
+        #dffaff;
+
+    --muted:
+        #7193a0;
+
+    --cyan:
+        #52f5ff;
+
+    --cyan2:
+        #00aeca;
+
+    --blue:
+        #1479ff;
+
+    --violet:
+        #8a5cff;
+
+    --magenta:
+        #ff3fd5;
+
+    --green:
+        #2dffc2;
+
+    --line:
+        rgba(82,245,255,.22);
+
+    --shadow:
+        0 0 40px rgba(0,220,255,.12);
+
+    --font:
+        "Segoe UI",
+        "Noto Sans Thai",
+        Arial,
+        sans-serif;
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+
+    min-height:100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(0,100,130,.20),
+            transparent 35%
+        ),
+        linear-gradient(
+            180deg,
+            #010b12,
+            #00040a 70%,
+            #000107
+        );
+
+    color:var(--text);
+
+    font-family:var(--font);
+
+    overflow-x:hidden;
+
+    transition:
+        background 1s ease,
+        color 1s ease;
+}
+
+button,
+a{
+    font-family:inherit;
+}
+
+button{
+    cursor:pointer;
+}
+
+
+/* =========================================================
+   SCROLL BAR
+   ========================================================= */
+
+::-webkit-scrollbar{
+    width:7px;
+}
+
+::-webkit-scrollbar-track{
+    background:#010409;
+}
+
+::-webkit-scrollbar-thumb{
+    background:
+        linear-gradient(
+            180deg,
+            var(--cyan),
+            var(--violet)
+        );
+
+    border-radius:10px;
+}
+
+
+/* =========================================================
+   LOADING SCREEN
+   ========================================================= */
+
+#loader{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:99999;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,180,220,.14),
+            transparent 38%
+        ),
+        #00050b;
+
+    transition:
+        opacity .8s ease,
+        visibility .8s ease;
+}
+
+#loader.hide{
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+}
+
+.boot-window{
+
+    width:min(760px,90%);
+
+    padding:38px;
+
+    border:1px solid rgba(69,240,255,.35);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(5,28,38,.88),
+            rgba(0,8,14,.94)
+        );
+
+    position:relative;
+
+    box-shadow:
+        0 0 80px rgba(0,210,255,.13),
+        inset 0 0 50px rgba(0,160,255,.04);
+
+    overflow:hidden;
+}
+
+.boot-window::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:8px;
+
+    border:1px solid rgba(69,240,255,.10);
+
+    pointer-events:none;
+}
+
+.boot-window::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+
+    height:180px;
+
+    border-radius:50%;
+
+    right:-80px;
+
+    top:-80px;
+
+    border:1px solid rgba(69,240,255,.25);
+
+    box-shadow:
+        0 0 40px rgba(0,230,255,.12);
+}
+
+.boot-title{
+
+    color:var(--cyan);
+
+    letter-spacing:7px;
+
+    font-size:14px;
+
+    margin-bottom:30px;
+}
+
+.boot-lines{
+
+    display:grid;
+
+    gap:13px;
+
+    color:#a9d7df;
+
+    font-family:monospace;
+
+    font-size:15px;
+}
+
+.boot-line{
+
+    opacity:.2;
+
+    transform:translateX(-10px);
+
+    transition:.4s;
+}
+
+.boot-line.active{
+
+    opacity:1;
+
+    transform:translateX(0);
+
+}
+
+.boot-line::before{
+
+    content:"> ";
+
+    color:var(--cyan);
+}
+
+.boot-progress{
+
+    height:4px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    margin-top:45px;
+
+    overflow:hidden;
+}
+
+.boot-progress-bar{
+
+    height:100%;
+
+    width:0%;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan),
+            var(--blue),
+            var(--magenta)
+        );
+
+    box-shadow:
+        0 0 20px var(--cyan);
+
+    transition:
+        width .15s linear;
+}
+
+.boot-percent{
+
+    margin-top:13px;
+
+    color:var(--cyan);
+
+    font-family:monospace;
+
+    font-size:12px;
+
+    text-align:right;
+}
+
+
+/* =========================================================
+   CURSOR
+   ========================================================= */
+
+.cursor-glow{
+
+    position:fixed;
+
+    width:300px;
+
+    height:300px;
+
+    border-radius:50%;
+
+    pointer-events:none;
+
+    z-index:5;
+
+    transform:translate(-50%,-50%);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(52,237,255,.09),
+            transparent 65%
+        );
+
+    mix-blend-mode:screen;
+}
+
+
+/* =========================================================
+   OCEAN BACKGROUND
+   ========================================================= */
+
+.ocean{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:-10;
+
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,27,39,.75),
+            transparent 40%
+        );
+}
+
+.ocean::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(0,215,255,.09),
+            transparent 25%
+        ),
+
+        radial-gradient(
+            circle at 80% 30%,
+            rgba(0,110,255,.07),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(0,50,70,.18),
+            transparent 45%
+        );
+}
+
+.depth-gradient{
+
+    position:absolute;
+
+    inset:0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,160,190,.08),
+            transparent 30%,
+            rgba(0,0,0,.65) 100%
+        );
+}
+
+
+/* =========================================================
+   ABYSS LIGHT RAYS
+   ========================================================= */
+
+.light-rays{
+
+    position:absolute;
+
+    top:-10%;
+
+    left:50%;
+
+    width:100%;
+
+    height:100%;
+
+    transform:translateX(-50%);
+
+    opacity:.35;
+}
+
+.ray{
+
+    position:absolute;
+
+    top:0;
+
+    width:120px;
+
+    height:70%;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(78,230,255,.08),
+            transparent
+        );
+
+    filter:blur(15px);
+
+    transform-origin:top;
+
+    animation:
+        rayMove 8s ease-in-out infinite alternate;
+}
+
+.ray:nth-child(1){
+
+    left:20%;
+
+    transform:rotate(10deg);
+}
+
+.ray:nth-child(2){
+
+    left:42%;
+
+    transform:rotate(-5deg);
+
+    animation-delay:2s;
+}
+
+.ray:nth-child(3){
+
+    left:65%;
+
+    transform:rotate(-13deg);
+
+    animation-delay:4s;
+}
+
+@keyframes rayMove{
+
+    from{
+        opacity:.25;
+    }
+
+    to{
+        opacity:.55;
+    }
+}
+
+
+/* =========================================================
+   PARTICLES
+   ========================================================= */
+
+.particles{
+
+    position:absolute;
+
+    inset:0;
+}
+
+.particle{
+
+    position:absolute;
+
+    width:2px;
+
+    height:2px;
+
+    border-radius:50%;
+
+    background:#8cf8ff;
+
+    box-shadow:
+        0 0 8px #32eaff;
+
+    opacity:.5;
+
+    animation:
+        floatParticle
+        var(--duration)
+        linear
+        infinite;
+}
+
+@keyframes floatParticle{
+
+    0%{
+        transform:
+            translateY(110vh)
+            translateX(0);
+        opacity:0;
+    }
+
+    15%{
+        opacity:.6;
+    }
+
+    85%{
+        opacity:.35;
+    }
+
+    100%{
+        transform:
+            translateY(-10vh)
+            translateX(var(--drift));
+        opacity:0;
+    }
+}
+
+
+/* =========================================================
+   SEA CREATURES
+   ========================================================= */
+
+.creatures{
+
+    position:absolute;
+
+    inset:0;
+
+    pointer-events:none;
+}
+
+.creature{
+
+    position:absolute;
+
+    font-size:30px;
+
+    filter:
+        drop-shadow(
+            0 0 8px rgba(80,230,255,.5)
+        );
+
+    opacity:.55;
+
+    animation:
+        swim
+        var(--swim)
+        ease-in-out
+        infinite alternate;
+}
+
+@keyframes swim{
+
+    from{
+        transform:
+            translateX(-20px)
+            translateY(0)
+            rotate(-3deg);
+    }
+
+    to{
+        transform:
+            translateX(70px)
+            translateY(-35px)
+            rotate(4deg);
+    }
+}
+
+.c1{
+    top:25%;
+    left:12%;
+    --swim:9s;
+}
+
+.c2{
+    top:40%;
+    right:18%;
+    --swim:12s;
+}
+
+.c3{
+    top:67%;
+    left:27%;
+    --swim:14s;
+}
+
+.c4{
+    top:16%;
+    right:35%;
+    --swim:11s;
+}
+
+.c5{
+    top:75%;
+    right:10%;
+    --swim:15s;
+}
+
+.c6{
+    top:52%;
+    left:60%;
+    --swim:10s;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.nav{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    right:0;
+
+    height:84px;
+
+    z-index:100;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        0
+        clamp(20px,6vw,90px);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(1,9,15,.94),
+            rgba(1,9,15,.35),
+            transparent
+        );
+
+    backdrop-filter:
+        blur(10px);
+
+    border-bottom:
+        1px solid rgba(75,220,255,.08);
+}
+
+.logo{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:13px;
+
+    font-weight:700;
+
+    letter-spacing:4px;
+
+    font-size:17px;
+}
+
+.logo-icon{
+
+    width:28px;
+
+    height:28px;
+
+    border:
+        1px solid var(--cyan);
+
+    transform:rotate(45deg);
+
+    position:relative;
+
+    box-shadow:
+        0 0 16px rgba(60,240,255,.25);
+}
+
+.logo-icon::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:7px;
+
+    border:
+        1px solid var(--cyan);
+}
+
+.nav-links{
+
+    display:flex;
+
+    gap:34px;
+
+    align-items:center;
+}
+
+.nav-links a{
+
+    color:#78939d;
+
+    text-decoration:none;
+
+    font-size:13px;
+
+    letter-spacing:1px;
+
+    position:relative;
+
+    transition:.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active{
+
+    color:white;
+}
+
+.nav-links a.active::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    bottom:-12px;
+
+    height:2px;
+
+    background:var(--cyan);
+
+    box-shadow:
+        0 0 10px var(--cyan);
+}
+
+.theme-button{
+
+    border:
+        1px solid rgba(72,238,255,.3);
+
+    background:
+        rgba(4,25,34,.7);
+
+    color:var(--cyan);
+
+    padding:
+        13px 19px;
+
+    letter-spacing:2px;
+
+    font-size:11px;
+
+    transition:.4s;
+}
+
+.theme-button:hover{
+
+    background:
+        rgba(50,230,255,.1);
+
+    box-shadow:
+        0 0 30px rgba(50,230,255,.15);
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+main{
+
+    position:relative;
+
+    z-index:2;
+}
+
+section{
+
+    position:relative;
+
+    width:min(1320px,92%);
+
+    margin:auto;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero{
+
+    min-height:100vh;
+
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1.3fr)
+        minmax(300px,.7fr);
+
+    align-items:center;
+
+    gap:70px;
+
+    padding-top:80px;
+}
+
+.hero-kicker{
+
+    color:var(--cyan);
+
+    letter-spacing:6px;
+
+    font-size:12px;
+
+    margin-bottom:25px;
+}
+
+.hero-title{
+
+    font-size:
+        clamp(65px,9vw,145px);
+
+    line-height:.82;
+
+    letter-spacing:-6px;
+
+    font-weight:800;
+
+    margin-bottom:35px;
+}
+
+.hero-title .outline{
+
+    color:transparent;
+
+    -webkit-text-stroke:
+        1px rgba(210,250,255,.35);
+
+    display:block;
+}
+
+.hero-title .bright{
+
+    color:var(--cyan);
+
+    display:block;
+
+    text-shadow:
+        0 0 35px rgba(60,240,255,.15);
+}
+
+.hero-description{
+
+    max-width:720px;
+
+    color:#89aab5;
+
+    line-height:2;
+
+    font-size:16px;
+
+    margin-bottom:30px;
+}
+
+.hero-description strong{
+
+    color:#eaffff;
+}
+
+.quote{
+
+    color:var(--cyan);
+
+    font-size:16px;
+
+    margin-bottom:30px;
+}
+
+.hero-buttons{
+
+    display:flex;
+
+    gap:12px;
+
+    flex-wrap:wrap;
+}
+
+.btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:170px;
+
+    padding:16px 23px;
+
+    text-decoration:none;
+
+    border:1px solid rgba(80,240,255,.35);
+
+    color:white;
+
+    background:
+        rgba(3,25,34,.65);
+
+    transition:.35s;
+
+    font-size:13px;
+}
+
+.btn.primary{
+
+    color:#001017;
+
+    background:var(--cyan);
+
+    border-color:var(--cyan);
+
+    box-shadow:
+        0 0 25px rgba(65,240,255,.15);
+}
+
+.btn:hover{
+
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 12px 30px rgba(0,230,255,.13);
+}
+
+
+/* =========================================================
+   HERO DATA PANEL
+   ========================================================= */
+
+.hero-panel{
+
+    position:relative;
+
+    min-height:520px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+.profile-frame{
+
+    width:min(370px,90%);
+
+    height:500px;
+
+    border:
+        1px solid rgba(72,238,255,.3);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(4,32,43,.75),
+            rgba(1,9,15,.85)
+        );
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 0 60px rgba(0,190,255,.08);
+}
+
+.profile-frame::before{
+
+    content:"";
+
+    position:absolute;
+
+    inset:14px;
+
+    border:
+        1px solid rgba(72,238,255,.12);
+
+    pointer-events:none;
+}
+
+.profile-photo{
+
+    position:absolute;
+
+    left:22px;
+
+    right:22px;
+
+    top:22px;
+
+    height:300px;
+
+    overflow:hidden;
+
+    border:
+        1px solid rgba(72,238,255,.25);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,180,220,.18),
+            rgba(0,10,17,.85)
+        );
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+}
+
+.profile-photo img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    display:none;
+}
+
+.profile-photo.has-image img{
+
+    display:block;
+}
+
+.photo-placeholder{
+
+    text-align:center;
+
+    color:#658b97;
+}
+
+.photo-symbol{
+
+    width:65px;
+
+    height:65px;
+
+    border:
+        2px solid var(--cyan);
+
+    transform:rotate(45deg);
+
+    margin:auto auto 28px;
+
+    box-shadow:
+        0 0 25px rgba(0,230,255,.2);
+}
+
+.photo-label{
+
+    font-size:10px;
+
+    letter-spacing:3px;
+}
+
+.profile-info{
+
+    position:absolute;
+
+    left:22px;
+
+    right:22px;
+
+    bottom:25px;
+
+    border-top:
+        1px solid rgba(72,238,255,.18);
+
+    padding-top:20px;
+}
+
+.profile-tag{
+
+    color:var(--cyan);
+
+    letter-spacing:3px;
+
+    font-size:10px;
+
+    margin-bottom:8px;
+}
+
+.profile-name{
+
+    font-size:28px;
+
+    font-weight:700;
+
+    margin-bottom:3px;
+}
+
+.profile-class{
+
+    color:#7195a0;
+
+    font-size:13px;
+}
+
+.depth-display{
+
+    position:absolute;
+
+    right:-20px;
+
+    top:30px;
+
+    padding:17px 22px;
+
+    border:
+        1px solid rgba(72,238,255,.25);
+
+    background:
+        rgba(2,16,23,.88);
+
+    backdrop-filter:blur(12px);
+}
+
+.depth-label{
+
+    font-size:9px;
+
+    letter-spacing:3px;
+
+    color:#6e909b;
+}
+
+.depth-number{
+
+    font-size:44px;
+
+    color:var(--cyan);
+
+    font-weight:700;
+
+    line-height:1;
+
+    margin:7px 0;
+}
+
+.depth-unit{
+
+    font-size:9px;
+
+    color:#63818a;
+
+    letter-spacing:2px;
+}
+
+
+/* =========================================================
+   SECTION HEADER
+   ========================================================= */
+
+.section{
+
+    padding:
+        130px
+        0;
+}
+
+.section-head{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:end;
+
+    gap:30px;
+
+    margin-bottom:45px;
+}
+
+.section-number{
+
+    color:var(--cyan);
+
+    letter-spacing:4px;
+
+    font-size:11px;
+
+    margin-bottom:12px;
+}
+
+.section-title{
+
+    font-size:
+        clamp(42px,6vw,80px);
+
+    line-height:.95;
+
+    letter-spacing:-3px;
+}
+
+.section-title span{
+
+    color:var(--cyan);
+}
+
+.section-description{
+
+    max-width:440px;
+
+    color:#65838d;
+
+    line-height:1.8;
+
+    font-size:14px;
+}
+
+
+/* =========================================================
+   INFO GRID
+   ========================================================= */
+
+.info-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:12px;
+}
+
+.info-card{
+
+    min-height:200px;
+
+    padding:28px;
+
+    border:
+        1px solid rgba(70,220,255,.15);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(5,34,45,.65),
+            rgba(1,12,18,.65)
+        );
+
+    position:relative;
+
+    overflow:hidden;
+
+    transition:
+        transform .4s,
+        border .4s,
+        background .4s;
+}
+
+.info-card:hover{
+
+    transform:
+        translateY(-8px);
+
+    border-color:
+        rgba(70,240,255,.55);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(5,50,65,.8),
+            rgba(1,14,21,.8)
+        );
+}
+
+.info-number{
+
+    color:#456c77;
+
+    font-size:11px;
+
+    letter-spacing:2px;
+
+    margin-bottom:35px;
+}
+
+.info-icon{
+
+    color:var(--cyan);
+
+    font-size:30px;
+
+    margin-bottom:20px;
+}
+
+.info-title{
+
+    font-size:18px;
+
+    margin-bottom:9px;
+}
+
+.info-text{
+
+    color:#668792;
+
+    font-size:13px;
+
+    line-height:1.7;
+}
+
+
+/* =========================================================
+   STORY SECTION
+   ========================================================= */
+
+.story{
+
+    display:grid;
+
+    grid-template-columns:
+        .9fr
+        1.1fr;
+
+    gap:70px;
+
+    align-items:center;
+}
+
+.story-orbit{
+
+    height:430px;
+
+    position:relative;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+}
+
+.orbit{
+
+    position:absolute;
+
+    border:
+        1px solid rgba(70,235,255,.18);
+
+    border-radius:50%;
+
+    animation:
+        orbitSpin
+        20s
+        linear
+        infinite;
+}
+
+.orbit.one{
+
+    width:300px;
+    height:300px;
+}
+
+.orbit.two{
+
+    width:220px;
+    height:220px;
+
+    animation-duration:14s;
+
+    animation-direction:reverse;
+}
+
+.orbit.three{
+
+    width:130px;
+    height:130px;
+
+    animation-duration:8s;
+}
+
+.orbit::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:7px;
+
+    height:7px;
+
+    background:var(--cyan);
+
+    border-radius:50%;
+
+    top:50%;
+
+    right:-4px;
+
+    box-shadow:
+        0 0 20px var(--cyan);
+}
+
+.core{
+
+    width:80px;
+
+    height:80px;
+
+    border:
+        1px solid var(--cyan);
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:var(--cyan);
+
+    box-shadow:
+        0 0 50px rgba(50,230,255,.15);
+}
+
+@keyframes orbitSpin{
+
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.story-text h3{
+
+    font-size:36px;
+
+    margin-bottom:20px;
+}
+
+.story-text p{
+
+    color:#76939d;
+
+    line-height:2;
+
+    margin-bottom:18px;
+}
+
+
+/* =========================================================
+   FISHING GAME
+   ========================================================= */
+
+.game-section{
+
+    padding:
+        100px
+        0
+        150px;
+}
+
+.game-shell{
+
+    border:
+        1px solid rgba(60,240,255,.25);
+
+    background:
+        rgba(2,15,22,.82);
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+        0 0 70px rgba(0,210,255,.06);
+}
+
+.game-top{
+
+    min-height:75px;
+
+    padding:
+        18px 24px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    border-bottom:
+        1px solid rgba(70,220,255,.14);
+}
+
+.game-title{
+
+    color:var(--cyan);
+
+    letter-spacing:3px;
+
+    font-size:12px;
+}
+
+.game-score{
+
+    font-family:monospace;
+
+    color:#a9dce3;
+}
+
+#fishingCanvas{
+
+    width:100%;
+
+    height:430px;
+
+    display:block;
+
+    cursor:crosshair;
+
+    background:
+        linear-gradient(
+            180deg,
+            #021a25,
+            #001018
+        );
+}
+
+.game-help{
+
+    padding:
+        18px 24px;
+
+    color:#607f89;
+
+    font-size:12px;
+
+    border-top:
+        1px solid rgba(70,220,255,.12);
+}
+
+.game-start{
+
+    position:absolute;
+
+    left:50%;
+
+    top:50%;
+
+    transform:translate(-50%,-50%);
+
+    border:
+        1px solid var(--cyan);
+
+    background:
+        rgba(0,20,27,.88);
+
+    color:var(--cyan);
+
+    padding:
+        17px 28px;
+
+    letter-spacing:2px;
+
+    z-index:4;
+
+    box-shadow:
+        0 0 30px rgba(0,220,255,.12);
+}
+
+.game-start.hide{
+
+    display:none;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer{
+
+    border-top:
+        1px solid rgba(70,220,255,.1);
+
+    padding:
+        35px 6%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#45656f;
+
+    font-size:11px;
+
+    letter-spacing:1px;
+}
+
+
+/* =========================================================
+   NEXUS THEME
+   ========================================================= */
+
+body.nexus{
+
+    --bg:#02030a;
+
+    --bg2:#07111b;
+
+    --cyan:#5effed;
+
+    --cyan2:#16c7c0;
+
+    --blue:#287bff;
+
+    --violet:#9c6bff;
+
+    --magenta:#ff3bd4;
+
+    --green:#42ffc9;
+
+    --line:rgba(94,255,237,.22);
+}
+
+body.nexus .ocean{
+
+    background:
+        radial-gradient(
+            circle at 50% 45%,
+            rgba(0,255,220,.08),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            #030b15,
+            #05030d
+        );
+}
+
+body.nexus .depth-gradient{
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(0,255,225,.05),
+            transparent 30%,
+            rgba(0,0,0,.75)
+        );
+}
+
+
+/* =========================================================
+   NEXUS GRID
+   ========================================================= */
+
+body.nexus .ocean::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    opacity:.32;
+
+    background-image:
+
+        linear-gradient(
+            rgba(75,255,237,.07) 1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(75,255,237,.07) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        45px 45px;
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            transparent,
+            black 15%,
+            black 80%,
+            transparent
+        );
+}
+
+
+/* =========================================================
+   NEXUS SCANLINES
+   ========================================================= */
+
+body.nexus main::before{
+
+    content:"";
+
+    position:fixed;
+
+    inset:0;
+
+    pointer-events:none;
+
+    z-index:50;
+
+    opacity:.10;
+
+    background:
+        repeating-linear-gradient(
+            0deg,
+            transparent 0px,
+            transparent 3px,
+            rgba(255,255,255,.04) 4px
+        );
+
+    animation:
+        scanMove
+        7s
+        linear
+        infinite;
+}
+
+@keyframes scanMove{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(20px);
+    }
+}
+
+
+/* =========================================================
+   NEXUS CREATURES BECOME DRONES
+   ========================================================= */
+
+body.nexus .creature{
+
+    filter:
+        drop-shadow(
+            0 0 12px var(--cyan)
+        );
+
+    opacity:.65;
+
+    font-size:24px;
+}
+
+body.nexus .creature::after{
+
+    content:"";
+
+    position:absolute;
+
+    inset:-8px;
+
+    border:
+        1px solid rgba(90,255,235,.25);
+
+    border-radius:50%;
+
+    animation:
+        dronePulse
+        2s
+        infinite;
+}
+
+@keyframes dronePulse{
+
+    0%,
+    100%{
+        transform:scale(.8);
+
+        opacity:.2;
+    }
+
+    50%{
+        transform:scale(1.25);
+
+        opacity:.7;
+    }
+}
+
+
+/* =========================================================
+   NEXUS HUD
+   ========================================================= */
+
+body.nexus .profile-frame{
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(0,65,65,.28),
+            rgba(9,2,24,.78)
+        );
+
+    border-color:
+        rgba(94,255,237,.5);
+
+    box-shadow:
+        0 0 80px rgba(0,255,225,.10),
+        inset 0 0 50px rgba(0,255,225,.04);
+}
+
+body.nexus .profile-frame::after{
+
+    content:"SCAN // ACTIVE";
+
+    position:absolute;
+
+    top:14px;
+
+    left:20px;
+
+    color:var(--green);
+
+    font-family:monospace;
+
+    font-size:9px;
+
+    letter-spacing:2px;
+}
+
+body.nexus .profile-photo{
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(0,255,220,.12),
+            rgba(7,2,18,.9)
+        );
+}
+
+body.nexus .profile-photo::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    top:50%;
+
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--cyan),
+            transparent
+        );
+
+    box-shadow:
+        0 0 15px var(--cyan);
+
+    animation:
+        scanLine
+        4s
+        ease-in-out
+        infinite;
+}
+
+@keyframes scanLine{
+
+    0%{
+        transform:translateY(-145px);
+    }
+
+    50%{
+        transform:translateY(145px);
+    }
+
+    100%{
+        transform:translateY(-145px);
+    }
+}
+
+
+/* =========================================================
+   NEXUS HERO GLITCH
+   ========================================================= */
+
+body.nexus .hero-title{
+
+    text-shadow:
+        3px 0 rgba(255,59,212,.35),
+        -3px 0 rgba(0,255,220,.25);
+}
+
+body.nexus .hero-title .bright{
+
+    background:
+        linear-gradient(
+            90deg,
+            #63fff1,
+            #2c9bff,
+            #b178ff,
+            #ff5add
+        );
+
+    -webkit-background-clip:text;
+
+    background-clip:text;
+
+    color:transparent;
+
+    background-size:200% auto;
+
+    animation:
+        nexusGradient
+        6s
+        linear
+        infinite;
+}
+
+@keyframes nexusGradient{
+
+    to{
+        background-position:200% center;
+    }
+}
+
+
+/* =========================================================
+   NEXUS BUTTON
+   ========================================================= */
+
+body.nexus .btn{
+
+    border-color:
+        rgba(94,255,237,.3);
+
+    background:
+        rgba(5,10,25,.7);
+}
+
+body.nexus .btn.primary{
+
+    color:#001513;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--cyan),
+            var(--green)
+        );
+}
+
+
+/* =========================================================
+   THEME TRANSITION
+   ========================================================= */
+
+.theme-transition{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:99990;
+
+    pointer-events:none;
+
+    opacity:0;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(80,255,240,.28),
+            transparent 25%
+        );
+
+    transition:
+        opacity .3s ease;
+}
+
+.theme-transition.active{
+
+    opacity:1;
+}
+
+
+/* =========================================================
+   REVEAL
+   ========================================================= */
+
+.reveal{
+
+    opacity:0;
+
+    transform:
+        translateY(35px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+}
+
+.reveal.visible{
+
+    opacity:1;
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media(max-width:900px){
+
+    .nav{
+
+        height:70px;
+
+        padding:
+            0 18px;
+    }
+
+    .nav-links{
+
+        display:none;
+    }
+
+    .hero{
+
+        grid-template-columns:1fr;
+
+        gap:40px;
+
+        padding-top:110px;
+    }
+
+    .hero-title{
+
+        font-size:
+            clamp(52px,15vw,90px);
+
+        letter-spacing:-4px;
+    }
+
+    .hero-panel{
+
+        min-height:450px;
+    }
+
+    .profile-frame{
+
+        width:min(360px,92%);
+
+        height:450px;
+    }
+
+    .info-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .story{
+
+        grid-template-columns:1fr;
+
+        gap:30px;
+    }
+
+    .section{
+
+        padding:
+            90px 0;
+    }
+
+    .section-head{
+
+        display:block;
+    }
+
+    .section-description{
+
+        margin-top:20px;
+    }
+
+    #fishingCanvas{
+
+        height:350px;
+    }
+
+    footer{
+
+        flex-direction:column;
+
+        gap:10px;
+    }
+
+}
+
+@media(max-width:560px){
+
+    .info-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .hero-description{
+
+        font-size:14px;
+    }
+
+    .depth-display{
+
+        right:-5px;
+
+        top:10px;
+    }
+
+    .hero-panel{
+
+        min-height:420px;
+    }
+
+    .profile-frame{
+
+        height:420px;
+    }
+
+    .profile-photo{
+
+        height:245px;
+    }
+
+    .game-top{
+
+        padding:
+            15px;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media(prefers-reduced-motion:reduce){
+
+    *,
+    *::before,
+    *::after{
+
+        animation-duration:
+            .01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        scroll-behavior:
+            auto !important;
+
+        transition-duration:
+            .01ms !important;
+    }
+}
+
+</style>
+
 </head>
 
-<body data-page="home">
 
-    <!-- LOADING SCREEN -->
-    <div id="loader">
+<body>
 
-        <div class="loader-ocean">
-            <div class="loader-ring"></div>
-            <div class="loader-diver">🤿</div>
+
+<!-- ======================================================
+     LOADER
+     ====================================================== -->
+
+<div id="loader">
+
+    <div class="boot-window">
+
+        <div class="boot-title">
+            AQUA-X // SYSTEM BOOT
         </div>
 
-        <div class="loader-title">
-            DIVING INTO MY WORLD
+        <div class="boot-lines">
+
+            <div class="boot-line">
+                INITIALIZING DEEP SEA NETWORK...
+            </div>
+
+            <div class="boot-line">
+                CONNECTING TO OCEAN DATABASE...
+            </div>
+
+            <div class="boot-line">
+                SCANNING BIOLUMINESCENT LIFE...
+            </div>
+
+            <div class="boot-line">
+                LOCATING SUBJECT // SUPITCHAYA...
+            </div>
+
+            <div class="boot-line">
+                OPENING OCEAN WORLD...
+            </div>
+
         </div>
 
-        <div class="loader-subtitle">
-            Exploring the underwater universe...
+        <div class="boot-progress">
+
+            <div
+                class="boot-progress-bar"
+                id="bootBar"
+            ></div>
+
         </div>
 
-        <div class="loader-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-
-    </div>
-
-
-    <!-- UNDERWATER SCENE -->
-    <div class="ocean-scene">
-
-        <div class="water-light"></div>
-
-        <div class="caustics"></div>
-
-        <div class="depth-fog"></div>
-
-        <div class="particle-layer"></div>
-
-        <div class="bubble-layer"></div>
-
-        <div class="fish-layer"></div>
-
-        <!-- CORAL -->
-        <div class="coral-bed">
-
-            <span class="coral coral-1"></span>
-            <span class="coral coral-2"></span>
-            <span class="coral coral-3"></span>
-            <span class="coral coral-4"></span>
-            <span class="coral coral-5"></span>
-            <span class="coral coral-6"></span>
-            <span class="coral coral-7"></span>
-            <span class="coral coral-8"></span>
-            <span class="coral coral-9"></span>
-            <span class="coral coral-10"></span>
-            <span class="coral coral-11"></span>
-            <span class="coral coral-12"></span>
-
-            <div class="seabed-rock rock-1"></div>
-            <div class="seabed-rock rock-2"></div>
-            <div class="seabed-rock rock-3"></div>
-
+        <div
+            class="boot-percent"
+            id="bootPercent"
+        >
+            0%
         </div>
 
     </div>
 
+</div>
 
-    <!-- MOUSE EFFECT -->
-    <div id="cursor-glow"></div>
 
-    <div id="coral-cursor">
-        <span></span>
-        <span></span>
-        <span></span>
+<!-- ======================================================
+     CURSOR
+     ====================================================== -->
+
+<div
+    class="cursor-glow"
+    id="cursorGlow"
+></div>
+
+
+<!-- ======================================================
+     THEME TRANSITION
+     ====================================================== -->
+
+<div
+    class="theme-transition"
+    id="themeTransition"
+></div>
+
+
+<!-- ======================================================
+     OCEAN BACKGROUND
+     ====================================================== -->
+
+<div class="ocean">
+
+    <div class="depth-gradient"></div>
+
+    <div class="light-rays">
+
+        <div class="ray"></div>
+
+        <div class="ray"></div>
+
+        <div class="ray"></div>
+
+    </div>
+
+    <div
+        class="particles"
+        id="particles"
+    ></div>
+
+    <div class="creatures">
+
+        <div class="creature c1">🐠</div>
+
+        <div class="creature c2">🪼</div>
+
+        <div class="creature c3">🐟</div>
+
+        <div class="creature c4">🐡</div>
+
+        <div class="creature c5">🦑</div>
+
+        <div class="creature c6">🐠</div>
+
+    </div>
+
+</div>
+
+
+<!-- ======================================================
+     NAVIGATION
+     ====================================================== -->
+
+<nav class="nav">
+
+    <div class="logo">
+
+        <div class="logo-icon"></div>
+
+        <span>
+            MY OCEAN
+        </span>
+
     </div>
 
 
-    <!-- HEADER -->
-    <header class="topbar">
+    <div class="nav-links">
 
-        <a href="index.html" class="logo">
-            <span class="logo-wave">🌊</span>
+        <a
+            href="#home"
+            class="active"
+        >
+            หน้าแรก
+        </a>
+
+        <a href="#profile">
+            ประวัติส่วนตัว
+        </a>
+
+        <a href="#education">
+            การศึกษา
+        </a>
+
+        <a href="#hobby">
+            งานอดิเรก
+        </a>
+
+        <a href="#contact">
+            ติดต่อ
+        </a>
+
+    </div>
+
+
+    <button
+        class="theme-button"
+        id="themeButton"
+    >
+        ◉ ABYSS
+    </button>
+
+</nav>
+
+
+<!-- ======================================================
+     MAIN
+     ====================================================== -->
+
+<main>
+
+
+<!-- ======================================================
+     HERO
+     ====================================================== -->
+
+<section
+    class="hero"
+    id="home"
+>
+
+    <div>
+
+        <div class="hero-kicker">
+            00 / DEEP OCEAN PORTFOLIO
+        </div>
+
+
+        <h1 class="hero-title">
 
             <span>
-                <strong>MY OCEAN</strong>
-                <small>STUDENT PORTFOLIO</small>
+                WELCOME
             </span>
+
+            <span class="outline">
+                TO MY
+            </span>
+
+            <span class="bright">
+                OCEAN WORLD
+            </span>
+
+        </h1>
+
+
+        <p class="hero-description">
+
+            สวัสดี ฉันชื่อ
+            <strong>
+                สุพิชญา บุตรต๊ะ
+            </strong>
+            หรือ “แก้ม”
+            นักเรียนชั้น
+            <strong>
+                ม.3/2
+            </strong>
+            จากโรงเรียนจอมทอง
+
+        </p>
+
+
+        <div class="quote">
+
+            “ศิลปะคือหนึ่งในจิตวิญญาณของฉัน”
+
+        </div>
+
+
+        <div class="hero-buttons">
+
+            <a
+                href="#profile"
+                class="btn primary"
+            >
+                สำรวจโลกของฉัน →
+            </a>
+
+            <a
+                href="#hobby"
+                class="btn"
+            >
+                สิ่งที่ฉันรัก ↓
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         PROFILE PANEL
+         ================================================== -->
+
+    <div class="hero-panel">
+
+        <div class="depth-display">
+
+            <div class="depth-label">
+                CURRENT DEPTH
+            </div>
+
+            <div
+                class="depth-number"
+                id="depthNumber"
+            >
+                000
+            </div>
+
+            <div class="depth-unit">
+                METERS BELOW
+            </div>
+
+        </div>
+
+
+        <div class="profile-frame">
+
+            <div
+                class="profile-photo"
+                id="profilePhoto"
+            >
+
+                <!--
+                    ใส่รูปตัวเองได้ตรงนี้
+
+                    เปลี่ยน:
+                    YOUR_PROFILE_IMAGE.jpg
+
+                    เป็นชื่อไฟล์ของรูป
+                    เช่น images/profile.jpg
+                -->
+
+                <img
+                    id="profileImage"
+                    src=""
+                    alt="Profile"
+                >
+
+                <div
+                    class="photo-placeholder"
+                    id="photoPlaceholder"
+                >
+
+                    <div class="photo-symbol"></div>
+
+                    <div class="photo-label">
+                        YOUR PROFILE PHOTO
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="profile-info">
+
+                <div class="profile-tag">
+                    STUDENT // SUBJECT 03
+                </div>
+
+                <div class="profile-name">
+                    สุพิชญา
+                </div>
+
+                <div class="profile-class">
+                    ม.3 / 2
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     PROFILE
+     ====================================================== -->
+
+<section
+    class="section reveal"
+    id="profile"
+>
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-number">
+                01 / ABOUT ME
+            </div>
+
+            <h2 class="section-title">
+                A QUIET
+                <span>
+                    MIND
+                </span>
+            </h2>
+
+        </div>
+
+        <p class="section-description">
+
+            โลกของฉันอาจไม่ได้เสียงดัง
+            แต่เต็มไปด้วยสิ่งเล็ก ๆ
+            ที่ฉันสนใจและอยากค้นพบ
+
+        </p>
+
+    </div>
+
+
+    <div class="info-grid">
+
+        <div class="info-card">
+
+            <div class="info-number">
+                01
+            </div>
+
+            <div class="info-icon">
+                ✦
+            </div>
+
+            <div class="info-title">
+                ตัวตน
+            </div>
+
+            <div class="info-text">
+                สุพิชญา บุตรต๊ะ
+                หรือ “แก้ม”
+                นักเรียน ม.3/2
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                02
+            </div>
+
+            <div class="info-icon">
+                ◇
+            </div>
+
+            <div class="info-title">
+                ความสนใจ
+            </div>
+
+            <div class="info-text">
+                ศิลปะ
+                การวาดภาพ
+                เพลง
+                และการค้นหาสิ่งใหม่ ๆ
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                03
+            </div>
+
+            <div class="info-icon">
+                ♫
+            </div>
+
+            <div class="info-title">
+                สิ่งที่รัก
+            </div>
+
+            <div class="info-text">
+                การสร้างสรรค์สิ่งต่าง ๆ
+                และช่วงเวลาที่ได้อยู่
+                กับโลกของตัวเอง
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                04
+            </div>
+
+            <div class="info-icon">
+                ◎
+            </div>
+
+            <div class="info-title">
+                ความฝัน
+            </div>
+
+            <div class="info-text">
+                อยากออกสำรวจโลกกว้าง
+                เรียนรู้สิ่งใหม่
+                และเติบโตไปในสิ่งที่รัก
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     EDUCATION
+     ====================================================== -->
+
+<section
+    class="section reveal"
+    id="education"
+>
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-number">
+                02 / EDUCATION
+            </div>
+
+            <h2 class="section-title">
+                MY
+                <span>
+                    JOURNEY
+                </span>
+            </h2>
+
+        </div>
+
+        <p class="section-description">
+
+            ทุกช่วงของการเรียนรู้
+            คืออีกหนึ่งระดับความลึก
+            ที่พาฉันเข้าใกล้สิ่งที่อยากเป็น
+
+        </p>
+
+    </div>
+
+
+    <div class="info-grid">
+
+        <div class="info-card">
+
+            <div class="info-number">
+                2561 — 2567
+            </div>
+
+            <div class="info-icon">
+                01
+            </div>
+
+            <div class="info-title">
+                ประถมศึกษา
+            </div>
+
+            <div class="info-text">
+                โรงเรียนศรีจอมทอง
+                ป.1 — ป.6
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                2567 — 2568
+            </div>
+
+            <div class="info-icon">
+                02
+            </div>
+
+            <div class="info-title">
+                มัธยมต้น
+            </div>
+
+            <div class="info-text">
+                โรงเรียนจอมทอง
+                ม.1 — ม.2
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                2569 — NOW
+            </div>
+
+            <div class="info-icon">
+                03
+            </div>
+
+            <div class="info-title">
+                ม.3 / 2
+            </div>
+
+            <div class="info-text">
+                โรงเรียนจอมทอง
+                จังหวัดเชียงใหม่
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                FUTURE
+            </div>
+
+            <div class="info-icon">
+                ∞
+            </div>
+
+            <div class="info-title">
+                DREAM
+            </div>
+
+            <div class="info-text">
+                อยากประกอบอาชีพ
+                รับราชการเป็นคุณครู
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     STORY
+     ====================================================== -->
+
+<section
+    class="section reveal"
+>
+
+    <div class="story">
+
+        <div class="story-orbit">
+
+            <div class="orbit one"></div>
+
+            <div class="orbit two"></div>
+
+            <div class="orbit three"></div>
+
+            <div class="core">
+                ◇
+            </div>
+
+        </div>
+
+
+        <div class="story-text">
+
+            <div class="section-number">
+                SIGNAL / PERSONAL LOG
+            </div>
+
+            <h3>
+                อยากรู้ว่า
+                <span style="color:var(--cyan)">
+                    โลกกว้างแค่ไหน
+                </span>
+            </h3>
+
+            <p>
+
+                ฉันชอบการเรียนรู้สิ่งใหม่ ๆ
+                และอยากออกไปเห็นโลกกว้าง
+                เพื่อค้นหาความรู้
+                ประสบการณ์
+                และสิ่งที่ตัวเองรักจริง ๆ
+
+            </p>
+
+            <p>
+
+                ตอนนี้ฉันยังคงทดลอง
+                ค้นหา
+                และสร้างสิ่งต่าง ๆ
+                ผ่านศิลปะ ดนตรี
+                เทคโนโลยี
+                และจินตนาการ
+
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     HOBBY
+     ====================================================== -->
+
+<section
+    class="section reveal"
+    id="hobby"
+>
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-number">
+                03 / MY FREE TIME
+            </div>
+
+            <h2 class="section-title">
+                MY LITTLE
+                <span>
+                    WORLDS
+                </span>
+            </h2>
+
+        </div>
+
+        <p class="section-description">
+
+            งานอดิเรกเล็ก ๆ
+            ที่ช่วยเติมสีสันให้โลกของฉัน
+
+        </p>
+
+    </div>
+
+
+    <div class="info-grid">
+
+        <div class="info-card">
+
+            <div class="info-number">
+                01
+            </div>
+
+            <div class="info-icon">
+                ✦
+            </div>
+
+            <div class="info-title">
+                วาดรูป
+            </div>
+
+            <div class="info-text">
+                เปลี่ยนความคิด
+                และจินตนาการ
+                ให้กลายเป็นภาพ
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                02
+            </div>
+
+            <div class="info-icon">
+                ♪
+            </div>
+
+            <div class="info-title">
+                ฟังเพลง
+            </div>
+
+            <div class="info-text">
+                เพลงคือพื้นที่
+                ที่ทำให้ฉัน
+                ได้อยู่กับความคิด
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                03
+            </div>
+
+            <div class="info-icon">
+                ♫
+            </div>
+
+            <div class="info-title">
+                ร้องเพลง
+            </div>
+
+            <div class="info-text">
+                ถ่ายทอดอารมณ์
+                และความรู้สึก
+                ผ่านเสียง
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                04
+            </div>
+
+            <div class="info-icon">
+                ◇
+            </div>
+
+            <div class="info-title">
+                DIY / Craft
+            </div>
+
+            <div class="info-text">
+                สร้างสิ่งใหม่ ๆ
+                ด้วยมือของตัวเอง
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                05
+            </div>
+
+            <div class="info-icon">
+                ◎
+            </div>
+
+            <div class="info-title">
+                เล่นเกม
+            </div>
+
+            <div class="info-text">
+                สำรวจโลกเสมือน
+                และความท้าทาย
+                ที่แตกต่างกัน
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-number">
+                06
+            </div>
+
+            <div class="info-icon">
+                ☾
+            </div>
+
+            <div class="info-title">
+                นอน
+            </div>
+
+            <div class="info-text">
+                ระบบต้องการ
+                recharge
+                เหมือนกันนะ 555
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     FISHING GAME
+     ====================================================== -->
+
+<section
+    class="game-section reveal"
+>
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-number">
+                04 / SIDE QUEST
+            </div>
+
+            <h2 class="section-title">
+                GO
+                <span>
+                    FISHING
+                </span>
+            </h2>
+
+        </div>
+
+        <p class="section-description">
+
+            ถ้าเข้ามาในโลกของฉันแล้ว
+            ลองตกปลาดูสิ 🎣
+
+        </p>
+
+    </div>
+
+
+    <div class="game-shell">
+
+        <div class="game-top">
+
+            <div class="game-title">
+                AQUA-X // FISHING SIMULATION
+            </div>
+
+            <div class="game-score">
+                SCORE:
+                <span id="gameScore">
+                    0
+                </span>
+            </div>
+
+        </div>
+
+
+        <canvas
+            id="fishingCanvas"
+        ></canvas>
+
+
+        <button
+            class="game-start"
+            id="gameStart"
+        >
+            START FISHING
+        </button>
+
+
+        <div class="game-help">
+
+            คลิก / แตะบนทะเลเพื่อปล่อยเบ็ด
+            แล้วลองจับปลาที่กำลังว่ายผ่านไป
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ======================================================
+     CONTACT
+     ====================================================== -->
+
+<section
+    class="section reveal"
+    id="contact"
+>
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-number">
+                05 / COMMUNICATION
+            </div>
+
+            <h2 class="section-title">
+                FIND
+                <span>
+                    ME
+                </span>
+            </h2>
+
+        </div>
+
+        <p class="section-description">
+
+            หากต้องการพูดคุย
+            สามารถส่งสัญญาณ
+            มาหาฉันได้
+
+        </p>
+
+    </div>
+
+
+    <div class="info-grid">
+
+        <a
+            class="info-card"
+            href="mailto:gamhom181a54@gmail.com"
+            style="text-decoration:none;color:inherit;"
+        >
+
+            <div class="info-number">
+                CHANNEL 01
+            </div>
+
+            <div class="info-icon">
+                @
+            </div>
+
+            <div class="info-title">
+                EMAIL
+            </div>
+
+            <div class="info-text">
+                gamhom181a54@gmail.com
+            </div>
+
         </a>
 
 
-        <nav class="nav">
+        <a
+            class="info-card"
+            href="tel:0636271686"
+            style="text-decoration:none;color:inherit;"
+        >
 
-            <a href="index.html" class="active">
-                HOME
-            </a>
-
-            <a href="profile.html">
-                PROFILE
-            </a>
-
-            <a href="education.html">
-                EDUCATION
-            </a>
-
-            <a href="hobby.html">
-                HOBBIES
-            </a>
-
-            <a href="contact.html">
-                CONTACT
-            </a>
-
-        </nav>
-
-
-        <button id="theme-toggle" class="theme-button">
-            ☀️
-        </button>
-
-    </header>
-
-
-    <!-- HUD -->
-    <div class="hud hud-top-left">
-
-        <div class="hud-line"></div>
-
-        <span>OCEAN SYSTEM</span>
-
-        <strong>ONLINE</strong>
-
-    </div>
-
-
-    <div class="hud hud-top-right">
-
-        <span>DEPTH</span>
-
-        <strong id="depth-value">
-            000 M
-        </strong>
-
-    </div>
-
-
-    <!-- MAIN -->
-    <main>
-
-        <section class="hero">
-
-            <div class="hero-content">
-
-                <div class="eyebrow">
-                    00 / WELCOME TO MY WORLD
-                </div>
-
-                <h1 class="hero-title">
-                    MY
-                    <span>OCEAN</span>
-                </h1>
-
-                <p class="hero-description">
-
-                    Dive into my world.
-                    Discover my story,
-                    education, hobbies
-                    and the little things
-                    that make me who I am.
-
-                </p>
-
-
-                <div class="hero-buttons">
-
-                    <a href="profile.html" class="ocean-button magnetic">
-                        EXPLORE MY WORLD
-                        <span>→</span>
-                    </a>
-
-                    <a href="hobby.html" class="ocean-button secondary magnetic">
-                        MY HOBBIES
-                    </a>
-
-                </div>
-
+            <div class="info-number">
+                CHANNEL 02
             </div>
 
-
-            <div class="hero-orb tilt-card">
-
-                <div class="orb-ring ring-1"></div>
-                <div class="orb-ring ring-2"></div>
-                <div class="orb-ring ring-3"></div>
-
-                <div class="orb-core">
-                    🌊
-                </div>
-
-                <div class="orb-label">
-                    <span>EXPLORING</span>
-                    <strong>THE BLUE</strong>
-                </div>
-
+            <div class="info-icon">
+                ☎
             </div>
 
-        </section>
-
-
-        <!-- INTRO -->
-        <section class="section reveal">
-
-            <div class="section-heading">
-
-                <span>
-                    DISCOVER
-                </span>
-
-                <h2>
-                    Welcome to my
-                    <em>underwater world.</em>
-                </h2>
-
+            <div class="info-title">
+                PHONE
             </div>
 
-
-            <div class="glass-grid">
-
-                <article class="glass-card tilt-card">
-
-                    <div class="card-number">
-                        01
-                    </div>
-
-                    <div class="card-icon">
-                        🐚
-                    </div>
-
-                    <h3>
-                        ABOUT ME
-                    </h3>
-
-                    <p>
-                        ทำความรู้จักกับตัวตน
-                        เรื่องราว และความสนใจ
-                        ของฉัน
-                    </p>
-
-                    <a href="profile.html">
-                        DISCOVER →
-                    </a>
-
-                </article>
-
-
-                <article class="glass-card tilt-card">
-
-                    <div class="card-number">
-                        02
-                    </div>
-
-                    <div class="card-icon">
-                        📚
-                    </div>
-
-                    <h3>
-                        EDUCATION
-                    </h3>
-
-                    <p>
-                        เส้นทางการเรียนรู้
-                        และสิ่งที่ฉันกำลังค้นหา
-                    </p>
-
-                    <a href="education.html">
-                        EXPLORE →
-                    </a>
-
-                </article>
-
-
-                <article class="glass-card tilt-card">
-
-                    <div class="card-number">
-                        03
-                    </div>
-
-                    <div class="card-icon">
-                        🎨
-                    </div>
-
-                    <h3>
-                        MY HOBBIES
-                    </h3>
-
-                    <p>
-                        สิ่งเล็ก ๆ ที่ทำให้
-                        โลกของฉันมีสีสัน
-                    </p>
-
-                    <a href="hobby.html">
-                        VIEW MORE →
-                    </a>
-
-                </article>
-
+            <div class="info-text">
+                063-627-1686
             </div>
 
-        </section>
+        </a>
 
 
-        <!-- QUOTE -->
-        <section class="quote-section reveal">
+        <a
+            class="info-card"
+            href="https://instagram.com/Supitchaya_Butta"
+            target="_blank"
+            style="text-decoration:none;color:inherit;"
+        >
 
-            <div class="quote-line"></div>
+            <div class="info-number">
+                CHANNEL 03
+            </div>
 
-            <p>
-                “Every wave carries a story.”
-            </p>
+            <div class="info-icon">
+                ◎
+            </div>
 
-            <span>
-                — MY OCEAN
-            </span>
+            <div class="info-title">
+                INSTAGRAM
+            </div>
 
-        </section>
+            <div class="info-text">
+                @Supitchaya_Butta
+            </div>
 
-    </main>
-
-
-    <!-- RADAR -->
-    <div class="radar">
-
-        <div class="radar-grid"></div>
-
-        <div class="radar-sweep"></div>
-
-        <div id="radar-cursor"></div>
-
-        <div class="radar-center"></div>
-
-        <span class="radar-text">
-            RADAR
-        </span>
-
-    </div>
+        </a>
 
 
-    <!-- FOOTER -->
-    <footer>
+        <div class="info-card">
 
-        <div>
-            🌊 MY OCEAN
+            <div class="info-number">
+                CHANNEL 04
+            </div>
+
+            <div class="info-icon">
+                ◇
+            </div>
+
+            <div class="info-title">
+                LOCATION
+            </div>
+
+            <div class="info-text">
+                Chiang Mai
+                Thailand
+            </div>
+
         </div>
 
-        <span>
-            Student Portfolio · Exploring my world, one wave at a time.
-        </span>
+    </div>
 
-    </footer>
+</section>
+
+
+</main>
+
+
+<!-- ======================================================
+     FOOTER
+     ====================================================== -->
+
+<footer>
+
+    <div>
+        AQUA-X // MY OCEAN WORLD
+    </div>
+
+    <div>
+        Student Portfolio // 2026
+    </div>
+
+</footer>
+
+
+<!-- ======================================================
+     JAVASCRIPT
+     ====================================================== -->
+
+<script>
+
+/* =========================================================
+   PARTICLES
+   ========================================================= */
+
+const particleContainer =
+    document.getElementById("particles");
+
+for(let i = 0; i < 85; i++){
+
+    const particle =
+        document.createElement("div");
+
+    particle.className =
+        "particle";
+
+    particle.style.left =
+        Math.random() * 100 + "%";
+
+    particle.style.setProperty(
+        "--duration",
+        (8 + Math.random() * 15) + "s"
+    );
+
+    particle.style.setProperty(
+        "--drift",
+        ((Math.random() - .5) * 180) + "px"
+    );
+
+    particle.style.animationDelay =
+        (-Math.random() * 20) + "s";
+
+    particleContainer.appendChild(
+        particle
+    );
+}
+
+
+/* =========================================================
+   LOADER
+   ========================================================= */
+
+const loader =
+    document.getElementById("loader");
+
+const bootBar =
+    document.getElementById("bootBar");
+
+const bootPercent =
+    document.getElementById("bootPercent");
+
+const bootLines =
+    document.querySelectorAll(".boot-line");
+
+let progress = 0;
+
+const bootInterval =
+    setInterval(() => {
+
+        progress +=
+            Math.random() * 8 + 3;
+
+        if(progress >= 100){
+
+            progress = 100;
+
+            clearInterval(
+                bootInterval
+            );
+
+            setTimeout(() => {
+
+                loader.classList.add(
+                    "hide"
+                );
+
+            },700);
+        }
+
+        bootBar.style.width =
+            progress + "%";
+
+        bootPercent.textContent =
+            Math.floor(progress) + "%";
+
+        const activeCount =
+            Math.ceil(
+                progress /
+                20
+            );
+
+        bootLines.forEach(
+            (line,index) => {
+
+                if(index < activeCount){
+
+                    line.classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    },180);
+
+
+/* =========================================================
+   CURSOR GLOW
+   ========================================================= */
+
+const cursorGlow =
+    document.getElementById(
+        "cursorGlow"
+    );
+
+window.addEventListener(
+    "pointermove",
+    event => {
+
+        cursorGlow.style.left =
+            event.clientX + "px";
+
+        cursorGlow.style.top =
+            event.clientY + "px";
+
+    }
+);
+
+
+/* =========================================================
+   THEME SYSTEM
+   ========================================================= */
+
+const themeButton =
+    document.getElementById(
+        "themeButton"
+    );
+
+const transition =
+    document.getElementById(
+        "themeTransition"
+    );
+
+let nexus =
+    localStorage.getItem(
+        "aqua-theme"
+    ) === "nexus";
+
+
+function updateTheme(){
+
+    document.body.classList.toggle(
+        "nexus",
+        nexus
+    );
+
+    themeButton.textContent =
+        nexus
+        ? "◉ NEXUS"
+        : "◉ ABYSS";
+
+    localStorage.setItem(
+        "aqua-theme",
+        nexus
+        ? "nexus"
+        : "abyss"
+    );
+}
+
+
+updateTheme();
+
+
+themeButton.addEventListener(
+    "click",
+    () => {
+
+        transition.classList.add(
+            "active"
+        );
+
+        setTimeout(() => {
+
+            nexus = !nexus;
+
+            updateTheme();
+
+        },220);
+
+        setTimeout(() => {
+
+            transition.classList.remove(
+                "active"
+            );
+
+        },650);
+
+    }
+);
+
+
+/* =========================================================
+   DEPTH COUNTER
+   ========================================================= */
+
+const depthNumber =
+    document.getElementById(
+        "depthNumber"
+    );
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        const max =
+            document.documentElement
+                .scrollHeight -
+            window.innerHeight;
+
+        const percentage =
+            max > 0
+            ? window.scrollY / max
+            : 0;
+
+        const depth =
+            Math.floor(
+                percentage * 2400
+            );
+
+        depthNumber.textContent =
+            String(depth).padStart(
+                3,
+                "0"
+            );
+
+    }
+);
+
+
+/* =========================================================
+   SCROLL REVEAL
+   ========================================================= */
+
+const revealItems =
+    document.querySelectorAll(
+        ".reveal"
+    );
+
+const revealObserver =
+    new IntersectionObserver(
+        entries => {
+
+            entries.forEach(
+                entry => {
+
+                    if(
+                        entry.isIntersecting
+                    ){
+
+                        entry.target.classList.add(
+                            "visible"
+                        );
+
+                    }
+
+                }
+            );
+
+        },
+        {
+            threshold:.15
+        }
+    );
+
+
+revealItems.forEach(
+    item => {
+
+        revealObserver.observe(
+            item
+        );
+
+    }
+);
+
+
+/* =========================================================
+   ACTIVE NAV
+   ========================================================= */
+
+const sections =
+    document.querySelectorAll(
+        "section[id]"
+    );
+
+const navLinks =
+    document.querySelectorAll(
+        ".nav-links a"
+    );
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        let current = "";
+
+        sections.forEach(
+            section => {
+
+                const top =
+                    section.offsetTop -
+                    150;
+
+                if(
+                    window.scrollY >=
+                    top
+                ){
+
+                    current =
+                        section.id;
+
+                }
+
+            }
+        );
+
+        navLinks.forEach(
+            link => {
+
+                link.classList.remove(
+                    "active"
+                );
+
+                if(
+                    link.getAttribute(
+                        "href"
+                    ) === "#" + current
+                ){
+
+                    link.classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   CARD INTERACTION
+   ========================================================= */
+
+document.querySelectorAll(
+    ".info-card"
+).forEach(
+    card => {
+
+        card.addEventListener(
+            "pointerdown",
+            () => {
+
+                card.style.transform =
+                    "scale(.97)";
+
+            }
+        );
+
+        card.addEventListener(
+            "pointerup",
+            () => {
+
+                card.style.transform =
+                    "";
+
+            }
+        );
+
+    }
+);
+
+
+/* =========================================================
+   PROFILE IMAGE
+   =========================================================
+
+   ตอนนี้ยังไม่ต้องใส่รูปก็ได้
+
+   ถ้าอยากใส่รูปจาก GitHub:
+
+   เปลี่ยน
+
+   profileImage.src = "";
+
+   เป็น
+
+   profileImage.src =
+       "images/profile.jpg";
+
+   */
+
+const profileImage =
+    document.getElementById(
+        "profileImage"
+    );
+
+const profilePhoto =
+    document.getElementById(
+        "profilePhoto"
+    );
+
+const photoPlaceholder =
+    document.getElementById(
+        "photoPlaceholder"
+    );
+
+
+/*
+   ตัวอย่าง:
+
+   profileImage.src =
+       "images/profile.jpg";
+
+   */
+
+profileImage.addEventListener(
+    "load",
+    () => {
+
+        profilePhoto.classList.add(
+            "has-image"
+        );
+
+        photoPlaceholder.style.display =
+            "none";
+
+    }
+);
+
+
+/* =========================================================
+   FISHING GAME
+   ========================================================= */
+
+const canvas =
+    document.getElementById(
+        "fishingCanvas"
+    );
+
+const ctx =
+    canvas.getContext("2d");
+
+const startButton =
+    document.getElementById(
+        "gameStart"
+    );
+
+const scoreElement =
+    document.getElementById(
+        "gameScore"
+    );
+
+
+let gameRunning = false;
+
+let score = 0;
+
+let fish = [];
+
+let hook = {
+
+    x:0,
+
+    y:0,
+
+    active:false,
+
+    target:null
+
+};
+
+
+function resizeCanvas(){
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    canvas.width =
+        rect.width *
+        devicePixelRatio;
+
+    canvas.height =
+        rect.height *
+        devicePixelRatio;
+
+    ctx.setTransform(
+        devicePixelRatio,
+        0,
+        0,
+        devicePixelRatio,
+        0,
+        0
+    );
+
+}
+
+
+window.addEventListener(
+    "resize",
+    resizeCanvas
+);
+
+resizeCanvas();
+
+
+function createFish(){
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+    return {
+
+        x:
+            Math.random() *
+            rect.width,
+
+        y:
+            100 +
+            Math.random() *
+            (rect.height - 170),
+
+        size:
+            15 +
+            Math.random() * 16,
+
+        speed:
+            .6 +
+            Math.random() * 1.5,
+
+        direction:
+            Math.random() > .5
+            ? 1
+            : -1,
+
+        color:
+            Math.random() > .5
+            ? "#5effed"
+            : "#4da5ff"
+
+    };
+
+}
+
+
+function startGame(){
+
+    gameRunning =
+        true;
+
+    score =
+        0;
+
+    scoreElement.textContent =
+        score;
+
+    fish =
+        [];
+
+    for(let i = 0; i < 10; i++){
+
+        fish.push(
+            createFish()
+        );
+
+    }
+
+    startButton.classList.add(
+        "hide"
+    );
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+startButton.addEventListener(
+    "click",
+    startGame
+);
+
+
+function drawFish(f){
+
+    ctx.save();
+
+    ctx.translate(
+        f.x,
+        f.y
+    );
+
+    ctx.scale(
+        f.direction,
+        1
+    );
+
+
+    ctx.beginPath();
+
+    ctx.ellipse(
+        0,
+        0,
+        f.size,
+        f.size * .58,
+        0,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        f.color;
+
+    ctx.shadowColor =
+        f.color;
+
+    ctx.shadowBlur =
+        15;
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        -f.size + 2,
+        0
+    );
+
+    ctx.lineTo(
+        -f.size * 1.7,
+        -f.size * .7
+    );
+
+    ctx.lineTo(
+        -f.size * 1.7,
+        f.size * .7
+    );
+
+    ctx.closePath();
+
+    ctx.fillStyle =
+        f.color;
+
+    ctx.fill();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        f.size * .45,
+        -f.size * .15,
+        2.5,
+        0,
+        Math.PI * 2
+    );
+
+    ctx.fillStyle =
+        "#ffffff";
+
+    ctx.shadowBlur =
+        0;
+
+    ctx.fill();
+
+
+    ctx.restore();
+
+}
+
+
+function drawHook(){
+
+    if(!hook.active){
+
+        return;
+
+    }
+
+
+    ctx.save();
+
+    ctx.strokeStyle =
+        "rgba(180,250,255,.8)";
+
+    ctx.lineWidth =
+        1;
+
+    ctx.shadowColor =
+        "#5effed";
+
+    ctx.shadowBlur =
+        8;
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+        hook.x,
+        0
+    );
+
+    ctx.lineTo(
+        hook.x,
+        hook.y
+    );
+
+    ctx.stroke();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+        hook.x,
+        hook.y,
+        8,
+        0,
+        Math.PI
+    );
+
+    ctx.stroke();
+
+
+    ctx.restore();
+
+}
+
+
+function gameLoop(){
+
+    if(!gameRunning){
+
+        return;
+
+    }
+
+    const rect =
+        canvas.getBoundingClientRect();
+
+
+    ctx.clearRect(
+        0,
+        0,
+        rect.width,
+        rect.height
+    );
+
+
+    /* WATER */
+
+    const gradient =
+        ctx.createLinearGradient(
+            0,
+            0,
+            0,
+            rect.height
+        );
+
+    gradient.addColorStop(
+        0,
+        "#062330"
+    );
+
+    gradient.addColorStop(
+        1,
+        "#001016"
+    );
+
+    ctx.fillStyle =
+        gradient;
+
+    ctx.fillRect(
+        0,
+        0,
+        rect.width,
+        rect.height
+    );
+
+
+    /* BUBBLES */
+
+    for(
+        let i = 0;
+        i < 18;
+        i++
+    ){
+
+        const x =
+            (i * 97 +
+            performance.now() / 40)
+            % rect.width;
+
+        const y =
+            rect.height -
+            ((i * 83 +
+            performance.now() / 20)
+            % rect.height);
+
+        ctx.beginPath();
+
+        ctx.arc(
+            x,
+            y,
+            2 + (i % 4),
+            0,
+            Math.PI * 2
+        );
+
+        ctx.strokeStyle =
+            "rgba(100,240,255,.18)";
+
+        ctx.stroke();
+
+    }
+
+
+    /* FISH */
+
+    fish.forEach(
+        f => {
+
+            f.x +=
+                f.speed *
+                f.direction;
+
+
+            if(
+                f.x <
+                -60
+            ){
+
+                f.x =
+                    rect.width + 60;
+
+            }
+
+
+            if(
+                f.x >
+                rect.width + 60
+            ){
+
+                f.x =
+                    -60;
+
+            }
+
+
+            drawFish(f);
+
+        }
+    );
+
+
+    drawHook();
+
+
+    /* CATCH CHECK */
+
+    if(hook.active){
+
+        fish.forEach(
+            f => {
+
+                const dx =
+                    f.x -
+                    hook.x;
+
+                const dy =
+                    f.y -
+                    hook.y;
+
+                const distance =
+                    Math.sqrt(
+                        dx * dx +
+                        dy * dy
+                    );
+
+                if(
+                    distance <
+                    f.size + 12
+                ){
+
+                    score++;
+
+                    scoreElement.textContent =
+                        score;
+
+                    f.x =
+                        rect.width +
+                        100;
+
+                    hook.active =
+                        false;
+
+                    hook.y =
+                        0;
+
+                }
+
+            }
+        );
+
+    }
+
+
+    requestAnimationFrame(
+        gameLoop
+    );
+
+}
+
+
+canvas.addEventListener(
+    "pointerdown",
+    event => {
+
+        if(!gameRunning){
+
+            return;
+
+        }
+
+
+        const rect =
+            canvas.getBoundingClientRect();
+
+
+        hook.x =
+            event.clientX -
+            rect.left;
+
+        hook.y =
+            event.clientY -
+            rect.top;
+
+        hook.active =
+            true;
+
+    }
+);
+
+
+/* =========================================================
+   KEYBOARD EASTER EGG
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(
+            event.key.toLowerCase()
+            === "n"
+        ){
+
+            nexus = !nexus;
+
+            updateTheme();
+
+        }
+
+    }
+);
+
+</script>
 
 </body>
+
 </html>
